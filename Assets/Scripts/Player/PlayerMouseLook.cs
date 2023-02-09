@@ -2,20 +2,28 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+
+// penis
 
 public class PlayerMouseLook : MonoBehaviour
 {
     [SerializeField] private float mouseSensitivityX;
     [SerializeField] private float mouseSensitivityY;
     [SerializeField] private float xClamp;
-    
+    [SerializeField] private int maxInteractDistance;
+    [SerializeField] private LayerMask layerMask;
     private InputSystem _inputSystem;
     private Camera _playerCamera;
+
 
     private float _mouseX;
     private float _mouseY;
     private float _xRotation;
     private Vector3 _targetRotation;
+    
+    
+    
     private void Start()
     {
         _inputSystem = GetComponent<InputSystem>();
@@ -41,6 +49,23 @@ public class PlayerMouseLook : MonoBehaviour
         _targetRotation = transform.eulerAngles;
         _targetRotation.x = _xRotation;
         _playerCamera.transform.eulerAngles = _targetRotation;
+    }
+
+    public void Interact()
+    {
+        var rayOrigin = _playerCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
+        if (!Physics.Raycast(rayOrigin, out var hit, maxInteractDistance)) return;
+        switch (hit.transform.tag)
+        {
+            case "Card":
+                var collidedCard = hit.transform.gameObject;
+                collidedCard.GetComponent<cardController>().CollectCard();
+                break;
+            case null:
+                Debug.Log("this has no tag");
+                break;
+        }
+        
     }
     
 }

@@ -71,6 +71,24 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""playerInteract"",
+                    ""type"": ""Button"",
+                    ""id"": ""fca5abd5-d478-48c5-ae3b-6def299259d8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""playerInventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""268ba2d3-762d-4ba4-8475-9c38b9c11da6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -172,6 +190,28 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""action"": ""playerMouseY"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4948b960-f1e5-4201-9638-f055a75e43a1"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KB+M"",
+                    ""action"": ""playerInteract"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3a792d22-7e2b-4b3e-9936-b20522e3546c"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KB+M"",
+                    ""action"": ""playerInventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -191,6 +231,8 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_playerInput_playerFire = m_playerInput.FindAction("playerFire", throwIfNotFound: true);
         m_playerInput_playerMouseX = m_playerInput.FindAction("playerMouseX", throwIfNotFound: true);
         m_playerInput_playerMouseY = m_playerInput.FindAction("playerMouseY", throwIfNotFound: true);
+        m_playerInput_playerInteract = m_playerInput.FindAction("playerInteract", throwIfNotFound: true);
+        m_playerInput_playerInventory = m_playerInput.FindAction("playerInventory", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -255,6 +297,8 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_playerInput_playerFire;
     private readonly InputAction m_playerInput_playerMouseX;
     private readonly InputAction m_playerInput_playerMouseY;
+    private readonly InputAction m_playerInput_playerInteract;
+    private readonly InputAction m_playerInput_playerInventory;
     public struct PlayerInputActions
     {
         private @PlayerControls m_Wrapper;
@@ -264,6 +308,8 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         public InputAction @playerFire => m_Wrapper.m_playerInput_playerFire;
         public InputAction @playerMouseX => m_Wrapper.m_playerInput_playerMouseX;
         public InputAction @playerMouseY => m_Wrapper.m_playerInput_playerMouseY;
+        public InputAction @playerInteract => m_Wrapper.m_playerInput_playerInteract;
+        public InputAction @playerInventory => m_Wrapper.m_playerInput_playerInventory;
         public InputActionMap Get() { return m_Wrapper.m_playerInput; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -288,6 +334,12 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @playerMouseY.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnPlayerMouseY;
                 @playerMouseY.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnPlayerMouseY;
                 @playerMouseY.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnPlayerMouseY;
+                @playerInteract.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnPlayerInteract;
+                @playerInteract.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnPlayerInteract;
+                @playerInteract.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnPlayerInteract;
+                @playerInventory.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnPlayerInventory;
+                @playerInventory.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnPlayerInventory;
+                @playerInventory.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnPlayerInventory;
             }
             m_Wrapper.m_PlayerInputActionsCallbackInterface = instance;
             if (instance != null)
@@ -307,6 +359,12 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @playerMouseY.started += instance.OnPlayerMouseY;
                 @playerMouseY.performed += instance.OnPlayerMouseY;
                 @playerMouseY.canceled += instance.OnPlayerMouseY;
+                @playerInteract.started += instance.OnPlayerInteract;
+                @playerInteract.performed += instance.OnPlayerInteract;
+                @playerInteract.canceled += instance.OnPlayerInteract;
+                @playerInventory.started += instance.OnPlayerInventory;
+                @playerInventory.performed += instance.OnPlayerInventory;
+                @playerInventory.canceled += instance.OnPlayerInventory;
             }
         }
     }
@@ -327,5 +385,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnPlayerFire(InputAction.CallbackContext context);
         void OnPlayerMouseX(InputAction.CallbackContext context);
         void OnPlayerMouseY(InputAction.CallbackContext context);
+        void OnPlayerInteract(InputAction.CallbackContext context);
+        void OnPlayerInventory(InputAction.CallbackContext context);
     }
 }

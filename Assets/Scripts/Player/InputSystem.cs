@@ -12,6 +12,8 @@ public class InputSystem : MonoBehaviour
     // private
     private PlayerControls _playerControls;
     private PlayerMovement _playerMovement;
+    private PlayerMouseLook _playerMouseLook;
+    private PlayerInventory _playerInventory;
     private Vector2 _movementInput;
     private Vector2 _mouseInput;
     
@@ -34,6 +36,8 @@ public class InputSystem : MonoBehaviour
             _playerControls.playerInput.playerJump.performed += _ => _playerMovement.Jump();
             _playerControls.playerInput.playerMouseX.performed += i => _mouseInput.x = i.ReadValue<float>();
             _playerControls.playerInput.playerMouseY.performed += i => _mouseInput.y = i.ReadValue<float>();
+            _playerControls.playerInput.playerInteract.performed += _ => _playerMouseLook.Interact();
+            _playerControls.playerInput.playerInventory.performed += _ => _playerInventory.OpenInventory();
         }
         
         _playerControls.Enable();
@@ -49,6 +53,8 @@ public class InputSystem : MonoBehaviour
     {
         Application.targetFrameRate = 60;
         _playerMovement = GetComponent<PlayerMovement>();
+        _playerMouseLook = GetComponent<PlayerMouseLook>();
+        _playerInventory = GetComponent<PlayerInventory>();
     }
 
     public void HandleAllInputs()
