@@ -84,6 +84,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (_isInDashCooldown) return;
         _isDashing = true;
+        _verticalVelocity.y = 0.0f;
         StartCoroutine(DashCooldown());
     }
 
