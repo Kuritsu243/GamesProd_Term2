@@ -1016,10 +1016,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerSpeed: 8
-  playerGravity: -10
-  playerJumpHeight: 3
-  playerDashMultiplier: 5
-  playerDashCooldown: 0.75
+  playerGravity: -16
+  playerJumpHeight: 4
+  playerDashMultiplier: 6
+  playerDashCooldown: 0.5
   playerDashDuration: 0.3
   groundMask:
     serializedVersion: 2
