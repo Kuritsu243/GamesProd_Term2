@@ -36,7 +36,7 @@ public class canvasScript : MonoBehaviour
 
     private void FixedUpdate()
     {
-        _activeItemText.text = _playerActiveItem.CurrentCard.name;
+        _activeItemText.text = _playerInventory.CurrentCard.name;
     }
 
     public void ToggleInventory(int cardIndex)

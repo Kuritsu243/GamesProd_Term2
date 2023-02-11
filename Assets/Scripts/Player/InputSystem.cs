@@ -28,6 +28,9 @@ public class InputSystem : MonoBehaviour
     public float MouseY { get; set; }
     
     public float ScrollY { get; set; }
+    
+    public bool ScrollUp { get; set; }
+    public bool ScrollDown { get; set; }
     private void OnEnable()
     {
         if (_playerControls == null)
@@ -41,6 +44,7 @@ public class InputSystem : MonoBehaviour
             _playerControls.playerInput.playerInteract.performed += _ => _playerMouseLook.Interact();
             _playerControls.playerInput.playerInventory.performed += _ => _playerInventory.OpenInventory();
             _playerControls.playerInput.changeActiveItem.performed += i => _scrollInput = i.ReadValue<Vector2>();
+            _playerControls.playerInput.changeActiveItem.performed += _ => _playerInventory.ChangeActiveItem();
         }
         
         _playerControls.Enable();
@@ -64,6 +68,7 @@ public class InputSystem : MonoBehaviour
     {
         HandleMovementInput();
         HandleMouseInput();
+        HandleScrollInput();
     }
 
     private void HandleMovementInput()
@@ -76,6 +81,26 @@ public class InputSystem : MonoBehaviour
     {
         MouseX = _mouseInput.x;
         MouseY = _mouseInput.y;
+    }
+
+    private void HandleScrollInput()
+    {
+        ScrollY = _scrollInput.y;
+        switch (ScrollY)
+        {
+            case > 0:
+                ScrollUp = true;
+                ScrollDown = false;
+                break;
+            case < 0:
+                ScrollDown = true;
+                ScrollUp = false;
+                break;
+            default:
+                ScrollUp = false;
+                ScrollDown = false;
+                break;
+        }
     }
 
 
