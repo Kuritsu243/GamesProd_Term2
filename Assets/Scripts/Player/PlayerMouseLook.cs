@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerMouseLook : MonoBehaviour
 {
+    [Range(40, 120)] [SerializeField] private float cameraFOV;
     [SerializeField] private float mouseSensitivityX;
     [SerializeField] private float mouseSensitivityY;
     [SerializeField] private float xClamp;
@@ -28,6 +29,7 @@ public class PlayerMouseLook : MonoBehaviour
     {
         _inputSystem = GetComponent<InputSystem>();
         _playerCamera = GetComponentInChildren<Camera>();
+        _playerCamera.fieldOfView = cameraFOV;
     }
 
     private void FixedUpdate()

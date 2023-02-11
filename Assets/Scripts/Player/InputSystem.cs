@@ -16,6 +16,7 @@ public class InputSystem : MonoBehaviour
     private PlayerInventory _playerInventory;
     private Vector2 _movementInput;
     private Vector2 _mouseInput;
+    private Vector2 _scrollInput;
     
     // encapsulated
     public bool MouseFire { get; }
@@ -26,7 +27,7 @@ public class InputSystem : MonoBehaviour
     
     public float MouseY { get; set; }
     
-
+    public float ScrollY { get; set; }
     private void OnEnable()
     {
         if (_playerControls == null)
@@ -34,10 +35,12 @@ public class InputSystem : MonoBehaviour
             _playerControls = new PlayerControls();
             _playerControls.playerInput.playerMovement.performed += i => _movementInput = i.ReadValue<Vector2>();
             _playerControls.playerInput.playerJump.performed += _ => _playerMovement.Jump();
+            _playerControls.playerInput.playerDash.performed += _ => _playerMovement.Dash();
             _playerControls.playerInput.playerMouseX.performed += i => _mouseInput.x = i.ReadValue<float>();
             _playerControls.playerInput.playerMouseY.performed += i => _mouseInput.y = i.ReadValue<float>();
             _playerControls.playerInput.playerInteract.performed += _ => _playerMouseLook.Interact();
             _playerControls.playerInput.playerInventory.performed += _ => _playerInventory.OpenInventory();
+            _playerControls.playerInput.changeActiveItem.performed += i => _scrollInput = i.ReadValue<Vector2>();
         }
         
         _playerControls.Enable();
@@ -74,4 +77,6 @@ public class InputSystem : MonoBehaviour
         MouseX = _mouseInput.x;
         MouseY = _mouseInput.y;
     }
+
+
 }

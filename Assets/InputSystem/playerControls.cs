@@ -89,6 +89,24 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""playerDash"",
+                    ""type"": ""Button"",
+                    ""id"": ""0ee68391-0e55-4c39-92a0-2c43b9ff38cd"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""changeActiveItem"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""cc7346ea-343e-4e8c-816c-b790cb540355"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -212,6 +230,28 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""action"": ""playerInventory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a7d40db0-7a7c-40c1-ba86-470144991615"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KB+M"",
+                    ""action"": ""playerDash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""882557e9-00d8-4fa2-a7ea-4fb2ac7a16f0"",
+                    ""path"": ""<Mouse>/scroll"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KB+M"",
+                    ""action"": ""changeActiveItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -233,6 +273,8 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_playerInput_playerMouseY = m_playerInput.FindAction("playerMouseY", throwIfNotFound: true);
         m_playerInput_playerInteract = m_playerInput.FindAction("playerInteract", throwIfNotFound: true);
         m_playerInput_playerInventory = m_playerInput.FindAction("playerInventory", throwIfNotFound: true);
+        m_playerInput_playerDash = m_playerInput.FindAction("playerDash", throwIfNotFound: true);
+        m_playerInput_changeActiveItem = m_playerInput.FindAction("changeActiveItem", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -299,6 +341,8 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_playerInput_playerMouseY;
     private readonly InputAction m_playerInput_playerInteract;
     private readonly InputAction m_playerInput_playerInventory;
+    private readonly InputAction m_playerInput_playerDash;
+    private readonly InputAction m_playerInput_changeActiveItem;
     public struct PlayerInputActions
     {
         private @PlayerControls m_Wrapper;
@@ -310,6 +354,8 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         public InputAction @playerMouseY => m_Wrapper.m_playerInput_playerMouseY;
         public InputAction @playerInteract => m_Wrapper.m_playerInput_playerInteract;
         public InputAction @playerInventory => m_Wrapper.m_playerInput_playerInventory;
+        public InputAction @playerDash => m_Wrapper.m_playerInput_playerDash;
+        public InputAction @changeActiveItem => m_Wrapper.m_playerInput_changeActiveItem;
         public InputActionMap Get() { return m_Wrapper.m_playerInput; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -340,6 +386,12 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @playerInventory.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnPlayerInventory;
                 @playerInventory.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnPlayerInventory;
                 @playerInventory.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnPlayerInventory;
+                @playerDash.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnPlayerDash;
+                @playerDash.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnPlayerDash;
+                @playerDash.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnPlayerDash;
+                @changeActiveItem.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnChangeActiveItem;
+                @changeActiveItem.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnChangeActiveItem;
+                @changeActiveItem.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnChangeActiveItem;
             }
             m_Wrapper.m_PlayerInputActionsCallbackInterface = instance;
             if (instance != null)
@@ -365,6 +417,12 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @playerInventory.started += instance.OnPlayerInventory;
                 @playerInventory.performed += instance.OnPlayerInventory;
                 @playerInventory.canceled += instance.OnPlayerInventory;
+                @playerDash.started += instance.OnPlayerDash;
+                @playerDash.performed += instance.OnPlayerDash;
+                @playerDash.canceled += instance.OnPlayerDash;
+                @changeActiveItem.started += instance.OnChangeActiveItem;
+                @changeActiveItem.performed += instance.OnChangeActiveItem;
+                @changeActiveItem.canceled += instance.OnChangeActiveItem;
             }
         }
     }
@@ -387,5 +445,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnPlayerMouseY(InputAction.CallbackContext context);
         void OnPlayerInteract(InputAction.CallbackContext context);
         void OnPlayerInventory(InputAction.CallbackContext context);
+        void OnPlayerDash(InputAction.CallbackContext context);
+        void OnChangeActiveItem(InputAction.CallbackContext context);
     }
 }

@@ -10,6 +10,8 @@ public class PlayerInventory : MonoBehaviour
 
     private List<cardObject> _currentCards = new List<cardObject>();
     private canvasScript _canvasScript;
+
+    private PlayerActiveItem _playerActiveItem;
     //encapsulated
     public List<cardObject> CurrentCards { get => _currentCards; }
     public void AddToInventory(cardObject cardToAdd)
@@ -24,8 +26,15 @@ public class PlayerInventory : MonoBehaviour
         _canvasScript.ToggleInventory(cardIndex);
     }
 
+    public void ChangeActiveItem()
+    {
+        var currentItemIndex = _currentCards.IndexOf(_playerActiveItem.CurrentCard);
+    }
+    
+
     private void Start()
     {
         _canvasScript = GameObject.FindGameObjectWithTag("Canvas").GetComponent<canvasScript>();
+        _playerActiveItem = GetComponent<PlayerActiveItem>();
     }
 }

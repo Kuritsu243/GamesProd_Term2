@@ -67,6 +67,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "playerDash",
+                    "type": "Button",
+                    "id": "0ee68391-0e55-4c39-92a0-2c43b9ff38cd",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "changeActiveItem",
+                    "type": "PassThrough",
+                    "id": "cc7346ea-343e-4e8c-816c-b790cb540355",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -188,6 +206,28 @@
                     "processors": "",
                     "groups": "KB+M",
                     "action": "playerInventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a7d40db0-7a7c-40c1-ba86-470144991615",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KB+M",
+                    "action": "playerDash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "882557e9-00d8-4fa2-a7ea-4fb2ac7a16f0",
+                    "path": "<Mouse>/scroll",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KB+M",
+                    "action": "changeActiveItem",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
