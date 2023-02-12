@@ -14,6 +14,8 @@ public class canvasScript : MonoBehaviour
     private PlayerActiveItem _playerActiveItem;
     private GameObject _inventoryUI;
     private TextMeshProUGUI _activeItemText;
+    private TextMeshProUGUI _activeItemNoText;
+    private TextMeshProUGUI _activeItemMode;
 
     private int _previousInvSize = 0;
     private int _slotIndex = 0;
@@ -28,6 +30,8 @@ public class canvasScript : MonoBehaviour
         _inventoryUI = GameObject.FindGameObjectWithTag("inventoryUI");
         _inventoryUI.SetActive(false);
         _activeItemText = GameObject.FindGameObjectWithTag("activeItem").GetComponent<TextMeshProUGUI>();
+        _activeItemNoText = GameObject.FindGameObjectWithTag("activeItemSlot").GetComponent<TextMeshProUGUI>();
+        _activeItemMode = GameObject.FindGameObjectWithTag("activeItemMode").GetComponent<TextMeshProUGUI>();
         foreach (var inventorySlot in inventorySlots)
         {
             inventorySlot.SetActive(false);
@@ -37,6 +41,23 @@ public class canvasScript : MonoBehaviour
     private void FixedUpdate()
     {
         _activeItemText.text = _playerInventory.CurrentCard.name;
+        _activeItemNoText.text = _playerInventory.ActiveItemIndex.ToString();
+
+        _activeItemMode.text = _playerInventory.IsInBuffMode switch
+        {
+            
+            true when !_playerInventory.IsInWeaponMode => "Buff mode",
+            false and false => "Weapon mode",
+            _ => "",
+        };
+        // if (_playerInventory.CurrentCard.isInBuffMode && !_playerInventory.CurrentCard.isInWeaponMode)
+        // {
+        //     _activeItemMode.text = "Buff Mode";
+        // }
+        // else if (_playerInventory.CurrentCard.isInWeaponMode && !_playerInventory.CurrentCard.isInBuffMode)
+        // {
+        //     _activeItemMode.text = "Weapon Mode";
+        // }
     }
 
     public void ToggleInventory(int cardIndex)
@@ -67,5 +88,9 @@ public class canvasScript : MonoBehaviour
         }
         _previousInvSize = cardIndex;
     }
-    
+
+    public void RotateCard()
+    {
+        
+    }
 }

@@ -14,7 +14,7 @@ public class cardObject : ScriptableObject
     [SerializeField] public Sprite cardSprite;
     public MeshRenderer meshRenderer;
     public PlayerInventory playerInventory;
-    
+
     public bool IsInInventory { get; set; }
     public bool IsCurrentlyActive { get; set; }
     

@@ -45,6 +45,7 @@ public class InputSystem : MonoBehaviour
             _playerControls.playerInput.playerInventory.performed += _ => _playerInventory.OpenInventory();
             _playerControls.playerInput.changeActiveItem.performed += i => _scrollInput = i.ReadValue<Vector2>();
             _playerControls.playerInput.changeActiveItem.performed += _ => _playerInventory.ChangeActiveItem();
+            _playerControls.playerInput.playerChangeItemMode.performed += _ => _playerInventory.ChangeActiveCardMode();
         }
         
         _playerControls.Enable();

@@ -85,6 +85,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "playerChangeItemMode",
+                    "type": "Button",
+                    "id": "9bea4666-403e-419c-b8f9-17afe6658311",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -228,6 +237,17 @@
                     "processors": "",
                     "groups": "KB+M",
                     "action": "changeActiveItem",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fdbefb90-d1c8-4336-81e5-75e9f74c5d44",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KB+M",
+                    "action": "playerChangeItemMode",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -107,6 +107,15 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""playerChangeItemMode"",
+                    ""type"": ""Button"",
+                    ""id"": ""9bea4666-403e-419c-b8f9-17afe6658311"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -252,6 +261,17 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""action"": ""changeActiveItem"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fdbefb90-d1c8-4336-81e5-75e9f74c5d44"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KB+M"",
+                    ""action"": ""playerChangeItemMode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -275,6 +295,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_playerInput_playerInventory = m_playerInput.FindAction("playerInventory", throwIfNotFound: true);
         m_playerInput_playerDash = m_playerInput.FindAction("playerDash", throwIfNotFound: true);
         m_playerInput_changeActiveItem = m_playerInput.FindAction("changeActiveItem", throwIfNotFound: true);
+        m_playerInput_playerChangeItemMode = m_playerInput.FindAction("playerChangeItemMode", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -343,6 +364,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_playerInput_playerInventory;
     private readonly InputAction m_playerInput_playerDash;
     private readonly InputAction m_playerInput_changeActiveItem;
+    private readonly InputAction m_playerInput_playerChangeItemMode;
     public struct PlayerInputActions
     {
         private @PlayerControls m_Wrapper;
@@ -356,6 +378,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         public InputAction @playerInventory => m_Wrapper.m_playerInput_playerInventory;
         public InputAction @playerDash => m_Wrapper.m_playerInput_playerDash;
         public InputAction @changeActiveItem => m_Wrapper.m_playerInput_changeActiveItem;
+        public InputAction @playerChangeItemMode => m_Wrapper.m_playerInput_playerChangeItemMode;
         public InputActionMap Get() { return m_Wrapper.m_playerInput; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -392,6 +415,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @changeActiveItem.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnChangeActiveItem;
                 @changeActiveItem.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnChangeActiveItem;
                 @changeActiveItem.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnChangeActiveItem;
+                @playerChangeItemMode.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnPlayerChangeItemMode;
+                @playerChangeItemMode.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnPlayerChangeItemMode;
+                @playerChangeItemMode.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnPlayerChangeItemMode;
             }
             m_Wrapper.m_PlayerInputActionsCallbackInterface = instance;
             if (instance != null)
@@ -423,6 +449,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @changeActiveItem.started += instance.OnChangeActiveItem;
                 @changeActiveItem.performed += instance.OnChangeActiveItem;
                 @changeActiveItem.canceled += instance.OnChangeActiveItem;
+                @playerChangeItemMode.started += instance.OnPlayerChangeItemMode;
+                @playerChangeItemMode.performed += instance.OnPlayerChangeItemMode;
+                @playerChangeItemMode.canceled += instance.OnPlayerChangeItemMode;
             }
         }
     }
@@ -447,5 +476,6 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnPlayerInventory(InputAction.CallbackContext context);
         void OnPlayerDash(InputAction.CallbackContext context);
         void OnChangeActiveItem(InputAction.CallbackContext context);
+        void OnPlayerChangeItemMode(InputAction.CallbackContext context);
     }
 }
