@@ -25,9 +25,9 @@
                 },
                 {
                     "name": "playerFire",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "2c9a512e-4c16-4ecf-be62-b508d94d4068",
-                    "expectedControlType": "Vector3",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -166,7 +166,7 @@
                 {
                     "name": "",
                     "id": "ebaac7fa-63c3-4c82-a6ba-7667bc24417d",
-                    "path": "",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "KB+M",

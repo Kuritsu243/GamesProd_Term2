@@ -14,6 +14,7 @@ public class InputSystem : MonoBehaviour
     private PlayerMovement _playerMovement;
     private PlayerMouseLook _playerMouseLook;
     private PlayerInventory _playerInventory;
+    private PlayerShooting _playerShooting;
     private Vector2 _movementInput;
     private Vector2 _mouseInput;
     private Vector2 _scrollInput;
@@ -46,6 +47,7 @@ public class InputSystem : MonoBehaviour
             _playerControls.playerInput.changeActiveItem.performed += i => _scrollInput = i.ReadValue<Vector2>();
             _playerControls.playerInput.changeActiveItem.performed += _ => _playerInventory.ChangeActiveItem();
             _playerControls.playerInput.playerChangeItemMode.performed += _ => _playerInventory.ChangeActiveCardMode();
+            _playerControls.playerInput.playerFire.performed += _ => _playerShooting.Fire();
         }
         
         _playerControls.Enable();
@@ -63,6 +65,7 @@ public class InputSystem : MonoBehaviour
         _playerMovement = GetComponent<PlayerMovement>();
         _playerMouseLook = GetComponent<PlayerMouseLook>();
         _playerInventory = GetComponent<PlayerInventory>();
+        _playerShooting = GetComponent<PlayerShooting>();
     }
 
     public void HandleAllInputs()

@@ -10,6 +10,7 @@ TagManager:
   - Card
   - activeItemSlot
   - activeItemMode
+  - Enemy
   layers:
   - Default
   - TransparentFX

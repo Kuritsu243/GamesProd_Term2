@@ -18,7 +18,7 @@ MonoBehaviour:
   weaponAmmo: 0
   weaponProjectile: {fileID: 0}
   cardSprite: {fileID: 21300000, guid: 446d3edd09ab9694e9d671c628406e0c, type: 3}
-  isInWeaponMode: 0
-  isInBuffMode: 1
+  buffType: 1
+  weaponType: 1
   meshRenderer: {fileID: 0}
   playerInventory: {fileID: 0}

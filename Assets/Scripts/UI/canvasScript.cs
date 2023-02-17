@@ -46,8 +46,8 @@ public class canvasScript : MonoBehaviour
         _activeItemMode.text = _playerInventory.IsInBuffMode switch
         {
             
-            true when !_playerInventory.IsInWeaponMode => "Buff mode",
-            false and false => "Weapon mode",
+            true when !_playerInventory.IsInWeaponMode => _playerInventory.CurrentCard.buffType.ToString(),
+            false and false => _playerInventory.CurrentCard.weaponType.ToString(),
             _ => "",
         };
         // if (_playerInventory.CurrentCard.isInBuffMode && !_playerInventory.CurrentCard.isInWeaponMode)
