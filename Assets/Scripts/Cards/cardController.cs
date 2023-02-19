@@ -25,7 +25,7 @@ public class cardController : MonoBehaviour
     {
         _player = GameObject.FindGameObjectWithTag("Player");
         _playerInventory = _player.GetComponent<PlayerInventory>();
-        _playerActiveItem = _player.GetComponent<PlayerActiveItem>();
+        _playerActiveItem = _player.GetComponentInChildren<PlayerActiveItem>();
         _maxIndex = cards.Count;
         Debug.Log(RandomizeCard());
     }
@@ -37,10 +37,12 @@ public class cardController : MonoBehaviour
         {
             _playerInventory.AddToInventory(RandomizeCard());
             _playerInventory.SetActiveCard(_playerInventory.CurrentCards.LastIndexOf(_playerInventory.CurrentCards.Last()));
+            
         }
         else
         {
-            _playerInventory.AddToInventory(RandomizeCard());
+            do { RandomizeCard(); } while (_playerInventory.CurrentCards.Contains(_chosenCard));
+            _playerInventory.AddToInventory(_chosenCard);
         }
         Destroy(this.gameObject);
         

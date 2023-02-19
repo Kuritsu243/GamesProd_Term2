@@ -14,7 +14,7 @@ public class PlayerShooting : MonoBehaviour
     [SerializeField] private GameObject weaponProjectile;
     [SerializeField] private LayerMask layerMask;
     [SerializeField] private int maxInteractDistance;
-    private int _currentAmmo;
+    public int CurrentAmmo { get; set; }
     private PlayerInventory _playerInventory;
     private Camera _playerCamera;
     
@@ -24,13 +24,13 @@ public class PlayerShooting : MonoBehaviour
     {
         _playerInventory = GetComponent<PlayerInventory>();
         _playerCamera = GetComponentInChildren<Camera>();
-        _currentAmmo = 10;
+        CurrentAmmo = 10;
     }
 
     // Update is called once per frame
     public void Fire()
     {
-        if (_currentAmmo <= 0) return;
+        if (CurrentAmmo <= 0) return;
         switch (_playerInventory.IsInWeaponMode)
         {
             case false:
@@ -58,6 +58,10 @@ public class PlayerShooting : MonoBehaviour
                 collidedEnemy.GetComponent<enemyController>().TakeDamage(dualWieldDamage);
                 break;
         }
+
+        CurrentAmmo--;
+        if (CurrentAmmo > 0) return;
+        _playerInventory.ExpireWeapon(_playerInventory.CurrentCard);
     }
 
     private void PistolFire()

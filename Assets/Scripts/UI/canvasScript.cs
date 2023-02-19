@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class canvasScript : MonoBehaviour
 {
     [SerializeField] private GameObject[] inventorySlots;
+    [SerializeField] private int timeToShowNewCard;
     private GameObject _player;
     private PlayerInventory _playerInventory;
     private PlayerActiveItem _playerActiveItem;
@@ -16,7 +17,13 @@ public class canvasScript : MonoBehaviour
     private TextMeshProUGUI _activeItemText;
     private TextMeshProUGUI _activeItemNoText;
     private TextMeshProUGUI _activeItemMode;
-
+    private GameObject _cardInfoUI;
+    private TextMeshProUGUI _cardInfoName;
+    private TextMeshProUGUI _cardInfoDesc;
+    private PlayerHealth _playerHealth;
+    private TextMeshProUGUI _currentHealthText;
+    private TextMeshProUGUI _currentAmmoText;
+    private PlayerShooting _playerShooting;
     private int _previousInvSize = 0;
     private int _slotIndex = 0;
 
@@ -25,6 +32,9 @@ public class canvasScript : MonoBehaviour
     private void Start()
     {
         _player = GameObject.FindGameObjectWithTag("Player");
+        _playerShooting = _player.GetComponent<PlayerShooting>();
+        _playerHealth = _player.GetComponent<PlayerHealth>();
+        _currentHealthText = GameObject.FindGameObjectWithTag("currentHealth").GetComponent<TextMeshProUGUI>();
         _playerInventory = _player.GetComponent<PlayerInventory>();
         _playerActiveItem = _player.GetComponent<PlayerActiveItem>();
         _inventoryUI = GameObject.FindGameObjectWithTag("inventoryUI");
@@ -32,6 +42,11 @@ public class canvasScript : MonoBehaviour
         _activeItemText = GameObject.FindGameObjectWithTag("activeItem").GetComponent<TextMeshProUGUI>();
         _activeItemNoText = GameObject.FindGameObjectWithTag("activeItemSlot").GetComponent<TextMeshProUGUI>();
         _activeItemMode = GameObject.FindGameObjectWithTag("activeItemMode").GetComponent<TextMeshProUGUI>();
+        _cardInfoUI = GameObject.FindGameObjectWithTag("cardInfo");
+        _cardInfoName = GameObject.FindGameObjectWithTag("newCardName").GetComponent<TextMeshProUGUI>();
+        _cardInfoDesc = GameObject.FindGameObjectWithTag("newCardDesc").GetComponent<TextMeshProUGUI>();
+        _currentAmmoText = GameObject.FindGameObjectWithTag("ammoText").GetComponent<TextMeshProUGUI>();
+        _cardInfoUI.SetActive(false);
         foreach (var inventorySlot in inventorySlots)
         {
             inventorySlot.SetActive(false);
@@ -40,9 +55,10 @@ public class canvasScript : MonoBehaviour
 
     private void FixedUpdate()
     {
+        _currentHealthText.text = _playerHealth.CurrentHealth.ToString();
         _activeItemText.text = _playerInventory.CurrentCard.name;
         _activeItemNoText.text = _playerInventory.ActiveItemIndex.ToString();
-
+        _currentAmmoText.text = _playerShooting.CurrentAmmo.ToString();
         _activeItemMode.text = _playerInventory.IsInBuffMode switch
         {
             
@@ -93,4 +109,24 @@ public class canvasScript : MonoBehaviour
     {
         
     }
+
+    public void ShowNewCardUI(cardObject newCard)
+    {
+        _cardInfoName.text = newCard.name;
+        _cardInfoDesc.text = newCard.cardInfo;
+        StartCoroutine(NewCard());
+    }
+
+    private IEnumerator NewCard()
+    {
+        _cardInfoUI.SetActive(true);
+        Time.timeScale = 0f;
+        yield return new WaitForSecondsRealtime(timeToShowNewCard);
+        _cardInfoName.text = "";
+        _cardInfoDesc.text = "";
+        _cardInfoUI.SetActive(false);
+        Time.timeScale = 1f;
+    }
+    
+    
 }

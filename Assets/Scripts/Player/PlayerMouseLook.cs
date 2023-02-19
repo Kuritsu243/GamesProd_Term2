@@ -16,6 +16,7 @@ public class PlayerMouseLook : MonoBehaviour
     [SerializeField] private LayerMask layerMask;
     private InputSystem _inputSystem;
     private Camera _playerCamera;
+    
 
 
     private float _mouseX;

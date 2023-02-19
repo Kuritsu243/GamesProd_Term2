@@ -12,13 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1541e5db0885a394faf190b300c0f302, type: 3}
   m_Name: Card3
   m_EditorClassIdentifier: 
-  cardModel: {fileID: 0}
+  cardModel: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
   cardMesh: {fileID: 0}
+  cardMaterials:
+  - {fileID: 2100000, guid: 41f47151981080b45a546dbdebda5581, type: 2}
   weaponDamage: 0
   weaponAmmo: 0
-  weaponProjectile: {fileID: 0}
   cardSprite: {fileID: 21300000, guid: aad05c085ae286c4197c7972d4a16931, type: 3}
   buffType: 2
   weaponType: 1
+  crosshairSprite: {fileID: 0}
+  cardInfo: description test
   meshRenderer: {fileID: 0}
   playerInventory: {fileID: 0}

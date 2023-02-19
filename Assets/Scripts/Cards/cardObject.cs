@@ -23,14 +23,16 @@ public class cardObject : ScriptableObject
         Shotgun
     }
     
-    [SerializeField] private Mesh cardModel;
-    [SerializeField] private MeshFilter cardMesh;
+    [SerializeField] public Mesh cardModel;
+    [SerializeField] public MeshFilter cardMesh;
+    [SerializeField] public Material[] cardMaterials;
     [SerializeField] private float weaponDamage;
     [SerializeField] private float weaponAmmo;
     [SerializeField] public Sprite cardSprite;
     [SerializeField] public BuffType buffType;
     [SerializeField] public WeaponType weaponType;
     [SerializeField] public Sprite crosshairSprite;
+    [SerializeField] public string cardInfo;
     public MeshRenderer meshRenderer;
     public PlayerInventory playerInventory;
 

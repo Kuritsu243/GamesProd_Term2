@@ -9,6 +9,7 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] private int invSize;
 
     private List<cardObject> _currentCards = new List<cardObject>();
+    private List<cardObject> _previouslyCollectedCards = new List<cardObject>();
     private canvasScript _canvasScript;
     private int _nextItemIndex;
     private PlayerActiveItem _playerActiveItem;
@@ -26,6 +27,10 @@ public class PlayerInventory : MonoBehaviour
     {
         if (_currentCards.Count >= invSize) return;
         _currentCards.Add(cardToAdd);
+        if (_previouslyCollectedCards.Contains(cardToAdd)) return;
+        _previouslyCollectedCards.Add(cardToAdd);
+        _canvasScript.ShowNewCardUI(cardToAdd);
+
     }
 
     public void OpenInventory()
@@ -33,6 +38,7 @@ public class PlayerInventory : MonoBehaviour
         var cardIndex = _currentCards.Count();
         _canvasScript.ToggleInventory(cardIndex);
     }
+
 
     public void ChangeActiveItem()
     {
@@ -53,17 +59,18 @@ public class PlayerInventory : MonoBehaviour
                 break;
         }
         SetActiveCard(_nextItemIndex);
+        _playerActiveItem.ChangeActiveModel(CurrentCard.cardModel, CurrentCard.cardMaterials);
     }
 
     private void FixedUpdate()
     {
-        Debug.Log(_currentCards.Count);
+        
     }
-
+    
     private void Start()
     {
         _canvasScript = GameObject.FindGameObjectWithTag("Canvas").GetComponent<canvasScript>();
-        _playerActiveItem = GetComponent<PlayerActiveItem>();
+        _playerActiveItem = GetComponentInChildren<PlayerActiveItem>();
         _inputSystem = GetComponent<InputSystem>();
         IsInWeaponMode = true;
         IsInBuffMode = false;
@@ -73,6 +80,7 @@ public class PlayerInventory : MonoBehaviour
     {
         CurrentCard = _currentCards[cardIndex];
         ActiveItemIndex = cardIndex;
+        _playerActiveItem.ChangeActiveModel(CurrentCard.cardModel, CurrentCard.cardMaterials);
     }
 
     public void ChangeActiveCardMode()
@@ -96,5 +104,12 @@ public class PlayerInventory : MonoBehaviour
                 Debug.Log("you have somehow glitched this");
                 break;
         }
+    }
+
+    public void ExpireWeapon(cardObject card)
+    {
+        var cardToExpireIndex = _currentCards.IndexOf(card);
+        _currentCards.RemoveAt(cardToExpireIndex);
+        SetActiveCard(_currentCards.LastIndexOf(_currentCards.Last()));
     }
 }
