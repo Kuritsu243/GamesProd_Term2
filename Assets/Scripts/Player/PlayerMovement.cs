@@ -16,8 +16,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("What layer is classed as floor")]
     [SerializeField] private LayerMask groundMask;
 
-    
-    
+
     private InputSystem _inputSystem;
     private CharacterController _characterController;
     private PlayerMouseLook _playerMouseLook;

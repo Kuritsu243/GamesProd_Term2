@@ -7,8 +7,6 @@ using UnityEngine.EventSystems;
 
 public class InputSystem : MonoBehaviour
 {
-
-    
     // private
     private PlayerControls _playerControls;
     private PlayerMovement _playerMovement;
@@ -18,18 +16,18 @@ public class InputSystem : MonoBehaviour
     private Vector2 _movementInput;
     private Vector2 _mouseInput;
     private Vector2 _scrollInput;
-    
+
     // encapsulated
     public bool MouseFire { get; }
     public float VerticalInput { get; set; }
     public float HorizontalInput { get; set; }
-    
+
     public float MouseX { get; set; }
-    
+
     public float MouseY { get; set; }
-    
+
     public float ScrollY { get; set; }
-    
+
     public bool ScrollUp { get; set; }
     public bool ScrollDown { get; set; }
     private void OnEnable()

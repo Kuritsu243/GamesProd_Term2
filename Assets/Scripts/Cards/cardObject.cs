@@ -20,19 +20,27 @@ public class cardObject : ScriptableObject
     {
         DualWield,
         Pistol,
-        Shotgun
+        Shotgun,
+        Magic
     }
-    
-    [SerializeField] private Mesh cardModel;
-    [SerializeField] private MeshFilter cardMesh;
+    [Header("3D Space")]
+    [SerializeField] public Mesh cardModel;
+    [SerializeField] public MeshFilter cardMesh;
+    [SerializeField] public Material[] cardMaterials;
+    [Header("2D Space")]
+    [SerializeField] public Sprite cardSprite;
+    [SerializeField] public string cardInfo;
+    [SerializeField] public Sprite crosshairSprite;
+    [Header("Damage, and Ammo")]
     [SerializeField] private float weaponDamage;
     [SerializeField] private float weaponAmmo;
-    [SerializeField] public Sprite cardSprite;
+    [Header("Weapon and Buff Type")]
     [SerializeField] public BuffType buffType;
     [SerializeField] public WeaponType weaponType;
-    [SerializeField] public Sprite crosshairSprite;
-    public MeshRenderer meshRenderer;
-    public PlayerInventory playerInventory;
+
+
+    [HideInInspector] public MeshRenderer meshRenderer;
+    [HideInInspector] public PlayerInventory playerInventory;
 
     public bool IsInInventory { get; set; }
     public bool IsCurrentlyActive { get; set; }
