@@ -5,15 +5,20 @@ using UnityEngine;
 
 public class cardController : MonoBehaviour
 {
-    private GameObject _player;
-    private int _maxIndex;
-    private int _chosenIndex;
+
+    //cards
     private cardObject _chosenCard;
     public List<cardObject> cards;
+    
+    //player
+    private GameObject _player;
     private PlayerInventory _playerInventory;
     private PlayerActiveItem _playerActiveItem;
 
-
+    //randomisation vars
+    private int _maxIndex;
+    private int _chosenIndex;
+    
     private cardObject RandomizeCard()
     {
         _chosenIndex = Random.Range(0, _maxIndex);

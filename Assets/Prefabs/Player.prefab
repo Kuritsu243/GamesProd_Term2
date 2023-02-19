@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1330256959878235428}
   m_Layer: 0
   m_Name: hand
-  m_TagString: Untagged
+  m_TagString: projSpawnPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -415,7 +415,8 @@ MonoBehaviour:
   dualWieldDamage: 1
   pistolDamage: 1
   shotgunDamage: 1
-  weaponProjectile: {fileID: 0}
+  magicDamage: 0
+  magicProjectile: {fileID: 0}
   layerMask:
     serializedVersion: 2
     m_Bits: 0

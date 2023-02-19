@@ -8,15 +8,19 @@ using UnityEngine.InputSystem;
 
 public class PlayerMouseLook : MonoBehaviour
 {
-    [Range(40, 120)] [SerializeField] private float cameraFOV;
+    [Header("Camera")] [Range(40, 120)] 
+    [SerializeField] private float cameraFOV;
+    [SerializeField] private float xClamp;
+
+    [Header("Mouse Options")] 
     [SerializeField] private float mouseSensitivityX;
     [SerializeField] private float mouseSensitivityY;
-    [SerializeField] private float xClamp;
+
+    [Header("Raycast Settings")] 
     [SerializeField] private int maxInteractDistance;
     [SerializeField] private LayerMask layerMask;
     private InputSystem _inputSystem;
     private Camera _playerCamera;
-    
 
 
     private float _mouseX;

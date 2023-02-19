@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
+    [Header("Health Settings")] 
     [SerializeField] private int maxHealth;
 
     public int CurrentHealth { get; set; }

@@ -12,19 +12,27 @@ public class enemyController : MonoBehaviour
         Melee,
         Ranged
     }
+
+    [Header("Enemy Health")] 
     [SerializeField] private int maxHealth;
-    [SerializeField] private int playerDetectionRadius;
+
+    [Header("Enemy Attack Settings")] 
     [SerializeField] private int meleeAttackRange;
     [SerializeField] private int meleeDamage;
     [SerializeField] private int rangedDamage;
-    [SerializeField] private AttackType attackType;
     [SerializeField] private int rangedAttackCooldown;
     [SerializeField] private int meleeAttackCooldown;
+    [SerializeField] private AttackType attackType;
+
+    [Header("Enemy AI Config")] 
+    [SerializeField] private int playerDetectionRadius;
+
 
     private int _currentHealth;
     private NavMeshAgent _navMeshAgent;
     private GameObject _player;
     private PlayerHealth _playerHealth;
+
     private bool _canAttack;
     // Start is called before the first frame update
     private void Start()

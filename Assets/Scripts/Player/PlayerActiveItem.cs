@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class PlayerActiveItem : MonoBehaviour
 {
-
     private PlayerInventory _playerInventory;
     private MeshFilter _meshFilter;
     private MeshRenderer _meshRenderer;

@@ -14,6 +14,7 @@ public class canvasScript : MonoBehaviour
     private PlayerInventory _playerInventory;
     private PlayerActiveItem _playerActiveItem;
     private GameObject _inventoryUI;
+    private GameObject _cardSprite;
     private TextMeshProUGUI _activeItemText;
     private TextMeshProUGUI _activeItemNoText;
     private TextMeshProUGUI _activeItemMode;
@@ -26,6 +27,7 @@ public class canvasScript : MonoBehaviour
     private PlayerShooting _playerShooting;
     private int _previousInvSize = 0;
     private int _slotIndex = 0;
+    private bool _currentlyRotating;
 
     private bool _isInvOpen;
     // Start is called before the first frame update
@@ -46,6 +48,7 @@ public class canvasScript : MonoBehaviour
         _cardInfoName = GameObject.FindGameObjectWithTag("newCardName").GetComponent<TextMeshProUGUI>();
         _cardInfoDesc = GameObject.FindGameObjectWithTag("newCardDesc").GetComponent<TextMeshProUGUI>();
         _currentAmmoText = GameObject.FindGameObjectWithTag("ammoText").GetComponent<TextMeshProUGUI>();
+        _cardSprite = GameObject.FindGameObjectWithTag("cardSprite");
         _cardInfoUI.SetActive(false);
         foreach (var inventorySlot in inventorySlots)
         {
@@ -107,7 +110,28 @@ public class canvasScript : MonoBehaviour
 
     public void RotateCard()
     {
-        
+        StartCoroutine(CardRotation(180f, 0.33f));
+    }
+
+    private IEnumerator CardRotation(float rotateAmount, float timeToTake)
+    {
+        if (_currentlyRotating) yield break;
+        _currentlyRotating = true;
+        var startRotation = _cardSprite.transform.eulerAngles.z;
+        var endRotation = startRotation + rotateAmount;
+        var t = 0f;
+        while (t < timeToTake)
+        {
+            t += Time.deltaTime;
+            var zRotation = Mathf.Lerp(startRotation, endRotation, t / timeToTake) % 360.0f;
+            var eulerAngles = _cardSprite.transform.eulerAngles;
+            eulerAngles = new Vector3(eulerAngles.x,
+                eulerAngles.y, zRotation);
+            _cardSprite.transform.eulerAngles = eulerAngles;
+            yield return null;
+        }
+        _currentlyRotating = false;
+
     }
 
     public void ShowNewCardUI(cardObject newCard)
