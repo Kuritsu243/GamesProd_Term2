@@ -42,6 +42,11 @@ public class PlayerInventory : MonoBehaviour
 
     public void ChangeActiveItem()
     {
+        if (_currentCards.Count == 1)
+        {
+            SetActiveCard(0);
+            _playerActiveItem.ChangeActiveModel(CurrentCard);
+        }
         _nextItemIndex = ActiveItemIndex;
         switch (_inputSystem.ScrollUp)
         {
@@ -59,7 +64,7 @@ public class PlayerInventory : MonoBehaviour
                 break;
         }
         SetActiveCard(_nextItemIndex);
-        _playerActiveItem.ChangeActiveModel(CurrentCard.cardModel, CurrentCard.cardMaterials);
+        _playerActiveItem.ChangeActiveModel(CurrentCard);
     }
 
     private void FixedUpdate()
@@ -80,7 +85,7 @@ public class PlayerInventory : MonoBehaviour
     {
         CurrentCard = _currentCards[cardIndex];
         ActiveItemIndex = cardIndex;
-        _playerActiveItem.ChangeActiveModel(CurrentCard.cardModel, CurrentCard.cardMaterials);
+        _playerActiveItem.ChangeActiveModel(CurrentCard);
     }
 
     public void ChangeActiveCardMode()

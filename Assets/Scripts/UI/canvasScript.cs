@@ -59,6 +59,7 @@ public class canvasScript : MonoBehaviour
     private void FixedUpdate()
     {
         _currentHealthText.text = _playerHealth.CurrentHealth.ToString();
+        if (_playerInventory.CurrentCards.Count < 1) return;
         _activeItemText.text = _playerInventory.CurrentCard.name;
         _activeItemNoText.text = _playerInventory.ActiveItemIndex.ToString();
         _currentAmmoText.text = _playerShooting.CurrentAmmo.ToString();

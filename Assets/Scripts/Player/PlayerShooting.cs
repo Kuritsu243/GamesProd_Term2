@@ -45,6 +45,7 @@ public class PlayerShooting : MonoBehaviour
     public void Fire()
     {
         if (CurrentAmmo <= 0) return;
+        if (_playerInventory.CurrentCards.Count < 1) return;
         switch (_playerInventory.IsInWeaponMode)
         {
             case false:

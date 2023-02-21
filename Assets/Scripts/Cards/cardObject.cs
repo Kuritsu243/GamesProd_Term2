@@ -24,7 +24,7 @@ public class cardObject : ScriptableObject
         Magic
     }
     [Header("3D Space")]
-    [SerializeField] public Mesh cardModel;
+    [SerializeField] public GameObject cardModel;
     [SerializeField] public MeshFilter cardMesh;
     [SerializeField] public Material[] cardMaterials;
     [Header("2D Space")]
