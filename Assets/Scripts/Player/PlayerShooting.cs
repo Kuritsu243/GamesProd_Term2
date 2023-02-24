@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Linq;
+using Enemies;
 
 public class PlayerShooting : MonoBehaviour
 {
@@ -73,7 +74,7 @@ public class PlayerShooting : MonoBehaviour
         {
             case "Enemy":
                 var collidedEnemy = hit.transform.gameObject;
-                collidedEnemy.GetComponent<enemyController>().TakeDamage(dualWieldDamage);
+                collidedEnemy.GetComponent<EnemyController>().TakeDamage(dualWieldDamage);
                 break;
         }
 
@@ -96,7 +97,7 @@ public class PlayerShooting : MonoBehaviour
     {
         _spawnedProjectile = Instantiate(magicProjectile, _projectileSpawnPoint.transform.position, transform.rotation);
         _magicProjectile = _spawnedProjectile.GetComponent<MagicProjectile>();
-        _magicProjectile.Initialize(magicDamage, magicProjectileSpeed, magicDespawnTime);
+        _magicProjectile.Initialize(magicDamage, magicProjectileSpeed, magicDespawnTime, false);
         CurrentAmmo--;
         if (CurrentAmmo > 0) return;
         _playerInventory.ExpireWeapon(_playerInventory.CurrentCard);
