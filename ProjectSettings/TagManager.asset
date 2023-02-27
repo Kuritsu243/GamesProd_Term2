@@ -11,6 +11,14 @@ TagManager:
   - activeItemSlot
   - activeItemMode
   - Enemy
+  - cardInfo
+  - newCardName
+  - cardSprite
+  - currentHealth
+  - newCardDesc
+  - ammoText
+  - projSpawnPoint
+  - enemyProjSpawn
   layers:
   - Default
   - TransparentFX
@@ -19,7 +27,7 @@ TagManager:
   - Water
   - UI
   - Floor
-  - 
+  - FPSView
   - 
   - 
   - 

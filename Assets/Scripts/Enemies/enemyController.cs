@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
 using System.Linq;
+using Player;
+using Player.Health;
+using Projectiles;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -8,9 +11,7 @@ namespace Enemies
 {
     public static class Helper
     {
-        public static GameObject
-            FindGameObjectInChildWithTag(this GameObject gameObject,
-                string tag) // creates function to allow to search for a gameobject with a tag
+        public static GameObject FindGameObjectInChildWithTag(this GameObject gameObject, string tag) // creates function to allow to search for a gameobject with a tag
         {
             var t = gameObject.transform;
             return (from Transform transform in t where transform.CompareTag(tag) select transform.gameObject)

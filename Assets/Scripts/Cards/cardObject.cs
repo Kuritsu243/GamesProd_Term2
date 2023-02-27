@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using Player;
+using Player.Inventory;
 using UnityEngine;
 using UnityEngine.UI;
 

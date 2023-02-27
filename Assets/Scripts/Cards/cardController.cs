@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
+using Player;
+using Player.Inventory;
+using Player.Shooting;
 using UnityEngine;
 
 public class cardController : MonoBehaviour
