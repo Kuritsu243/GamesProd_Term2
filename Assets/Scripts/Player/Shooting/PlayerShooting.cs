@@ -46,6 +46,7 @@ namespace Player.Shooting
         [Header("Raycast Settings")] 
         [SerializeField] private LayerMask layerMask;
         [SerializeField] private int maxInteractDistance;
+        [SerializeField] private GameObject emptyObj;
         [Header("Trail Settings")] 
         [SerializeField] private TrailRenderer bulletTrail;
         [Header("Projectile + Trail Spawn Points")] 
@@ -136,6 +137,36 @@ namespace Player.Shooting
 
         private void ShotgunFire()
         {
+            // for (int i = 0; i < shotgunPelletCount; i++)
+            // {
+            //     var accuracy = (Random.insideUnitCircle * shotgunSpreadSizeInt);
+            //     var ray = _playerCamera.ScreenPointToRay(Mouse.current.position.ReadValue() + accuracy);
+            //     if (Physics.Raycast(ray, out var hit))
+            //     {
+            //         var trail = Instantiate(bulletTrail, shotgunSpawnPos.transform.position, Quaternion.identity);
+            //         StartCoroutine(SpawnTrail(trail, hit));
+            //         switch (hit.transform.tag)
+            //         {
+            //             case "Enemy":
+            //                 var enemyScript = hit.transform.gameObject.GetComponent<EnemyController>();
+            //                 enemyScript.TakeDamage(shotgunDamage);
+            //                 break;
+            //             case null:
+            //                 break;
+            //         }
+            //     }
+            //     else
+            //     {
+            //         var spawnedObj = Instantiate(emptyObj, shotgunSpawnPosMouse.current.position.ReadValue() + accuracy,
+            //             Quaternion.identity);
+            //
+            //         var altTrail = Instantiate(bulletTrail, shotgunSpawnPos.transform.position , Quaternion.identity);
+            //         StartCoroutine(SpawnTrailAlternative(altTrail, spawnedObj.transform.position, spawnedObj));
+            //     }
+            //
+            // }
+            
+            
             // for (var i = 0; i < shotgunPelletCount; i++)
             // {
             //     var accuracy = (Random.insideUnitCircle * shotgunSpreadSizeInt);
@@ -157,51 +188,70 @@ namespace Player.Shooting
             //     else
             //     {
             //         var trail = Instantiate(bulletTrail, shotgunSpawnPos.transform.position, Quaternion.identity);
-            //         StartCoroutine(SpawnTrailAlternative(trail, transform.position + GetDirection() * 100, Vector3.zero));
+            //         StartCoroutine(
+            //             SpawnTrailAlternative(trail, transform.position + GetDirection() * 100, Vector3.zero));
             //     }
-            //     
-                
-                
-                
-                
-                
-                // var accuracy = Random.insideUnitCircle * shotgunSpreadSize;
-                // var dir = new Vector3(accuracy.x, accuracy.y, 1f);
-                // var sprayDir = transform.TransformVector(dir);
-                // Debug.ClearDeveloperConsole();
-                // Debug.Log(accuracy);
-                // var ray = _playerCamera.ScreenPointToRay(Mouse.current.position.ReadValue() + accuracy);
-                // var targetPoint = Physics.Raycast(ray, out var hit)
-                //     ? hit.point
-                //     : shotgunSpawnPos.transform.position + GetDirection(accuracy) * 100f;
-                // TrailRenderer trail = Instantiate(bulletTrail, shotgunSpawnPos.transform.position, Quaternion.identity);
-                // StartCoroutine(SpawnTrailAlternative(trail, targetPoint));
-                // switch (hit.transform.tag)
-                // {
-                //     case "Enemy":
-                //         var collidedEnemy = hit.transform.gameObject;
-                //         collidedEnemy.GetComponent<EnemyController>().TakeDamage(shotgunDamage);
-                //         break;
-                //     case null:
-                //         break;
-                // }
+            //
             // }
+
+
+
+            //
+            // var accuracy = Random.insideUnitCircle * shotgunSpreadSizeInt;
+            // var dir = new Vector3(accuracy.x, accuracy.y, 1f);
+            // var hasHitraycast = false;
+            // var sprayDir = transform.TransformVector(dir);
+            // Debug.ClearDeveloperConsole();
+            // Debug.Log(accuracy);
+            // var ray = _playerCamera.ScreenPointToRay(Mouse.current.position.ReadValue() + accuracy);
+            // Vector3 targetPoint;
+            // if (Physics.Raycast(ray, out var hit))
+            // {
+            //     targetPoint = hit.point;
+            //     hasHitraycast = true;
+            // }
+            // else
+            // {
+            //     targetPoint = shotgunSpawnPos.transform.position + GetDirection() * 100f;
+            //     hasHitraycast = false;
+            // }
+            // // var targetPoint = Physics.Raycast(ray, out var hit)
+            // //     ? hit.point
+            // //     : shotgunSpawnPos.transform.position + GetDirection() * 100f;
+            // TrailRenderer trail = Instantiate(bulletTrail, shotgunSpawnPos.transform.position, Quaternion.identity);
+            // StartCoroutine(SpawnTrailAlternative(trail, targetPoint));
+            // if (hasHitraycast)
+            // {
+            //     switch (hit.transform.tag)
+            //     {
+            //         case "Enemy":
+            //             var collidedEnemy = hit.transform.gameObject;
+            //             collidedEnemy.GetComponent<EnemyController>().TakeDamage(shotgunDamage);
+            //             break;
+            //         case null:
+            //             break;
+            //     }
+            // }
+            //
+            //
             // CurrentAmmo--;
             // if (CurrentAmmo > 0) return;
             // _playerInventory.ExpireWeapon(_playerInventory.CurrentCard);
             // if (!Physics.Raycast(rayOrigin, out var hit, maxInteractDistance)) return;
 
 
-
+            
             var pellets = new List<Quaternion>(shotgunPelletCount);
             for (var i = 0; i < shotgunPelletCount; i++) pellets.Add(Quaternion.Euler(Vector3.zero));
             for (var h = 0; h < shotgunPelletCount; h++)
             {
                 pellets[h] = Random.rotation;
-                var pellet = Instantiate(pelletProjectile, shotgunSpawnPos.transform.position, Quaternion.identity);
+                var pellet = Instantiate(pelletProjectile, shotgunSpawnPos.transform.position, shotgunSpawnPos.transform.rotation);
                 pellet.transform.rotation = Quaternion.RotateTowards(pellet.transform.rotation, pellets[h], shotgunSpreadSizeInt);
                 var pelletScript = pellet.GetComponent<ShotgunProjectile>();
-                pelletScript.Initialize(shotgunDamage, shotgunPelletSpeed, shotgunPelletDespawnTime);
+                pelletScript.Initialize(shotgunDamage, shotgunPelletSpeed, shotgunPelletDespawnTime, shotgunSpawnPos.transform.forward);
+                var pelletRigidbody = pellet.GetComponent<Rigidbody>();
+                // pelletRigidbody.velocity = shotgunSpawnPos.transform.forward * shotgunPelletSpeed;
             }
             
             CurrentAmmo--;
@@ -214,7 +264,8 @@ namespace Player.Shooting
         {
             var direction = transform.forward;
             direction = Random.insideUnitCircle * shotgunSpreadSizeInt;
-            direction = new Vector3(Mathf.Clamp(direction.x, 0, shotgunSpreadSizeInt / 100), Mathf.Clamp(direction.y, 0, shotgunSpreadSizeInt / 100), 0f);
+            direction = new Vector3(Mathf.Clamp(direction.x, 0, shotgunSpreadSizeInt / 100),
+                Mathf.Clamp(direction.y, 0, shotgunSpreadSizeInt / 100), 0f);
             direction.Normalize();
             return direction;
         }
@@ -264,7 +315,7 @@ namespace Player.Shooting
             Destroy(trail.gameObject, trail.time);
         }
 
-        private static IEnumerator SpawnTrailAlternative(TrailRenderer trail, Vector3 hit, Vector3 hitNormal)
+        private static IEnumerator SpawnTrailAlternative(TrailRenderer trail, Vector3 hit, GameObject objToDestroy)
         {
             float time = 0;
             var startPos = trail.transform.position;
@@ -277,6 +328,7 @@ namespace Player.Shooting
 
             trail.transform.position = hit;
             Destroy(trail.gameObject, trail.time);
+            Destroy(objToDestroy);
         }
 
         private Vector3 AlternativeDualWieldTrails()

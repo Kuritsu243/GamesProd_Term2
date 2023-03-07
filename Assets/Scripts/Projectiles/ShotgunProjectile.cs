@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using Enemies;
+using Random = UnityEngine.Random;
 
 
 namespace Projectiles
@@ -12,20 +13,26 @@ namespace Projectiles
         private int _pelletDamage;
         private int _pelletSpeed;
         private int _pelletDespawnTime;
+        private Vector3 _direction;
         private void Start()
         {
-            _pelletRigidbody = GetComponent<Rigidbody>();
-            _pelletCollider = GetComponent<Collider>();
-            _pelletRigidbody.AddForce(transform.forward * _pelletSpeed, ForceMode.Impulse);
+
+
         }
 
 
-        public void Initialize(int damage, int projectileSpeed, int despawnTime)
+        public void Initialize(int damage, int projectileSpeed, int despawnTime, Vector3 spawnDirection)
         {
             _pelletDamage = damage;
             _pelletSpeed = projectileSpeed;
             _pelletDespawnTime = despawnTime;
+            _direction = spawnDirection;
             Invoke(nameof(Despawn), _pelletDespawnTime);
+            _pelletRigidbody = GetComponent<Rigidbody>();
+            _pelletCollider = GetComponent<Collider>();
+            // _pelletRigidbody.AddForce((_direction + transform.forward) * _pelletSpeed, ForceMode.Impulse);
+            _pelletRigidbody.velocity = (spawnDirection + transform.forward) * projectileSpeed;
+
         }
 
         private void Despawn()
