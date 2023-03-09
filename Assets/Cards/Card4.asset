@@ -17,11 +17,11 @@ MonoBehaviour:
   cardMaterials:
   - {fileID: 2100000, guid: 4799b0f1d0c89b54ca8afd70098eacae, type: 2}
   cardSprite: {fileID: 0}
-  cardInfo: magic innit
+  cardInfo: pistol innit
   crosshairSprite: {fileID: 0}
   weaponDamage: 4
   weaponAmmo: 5
   buffType: 0
-  weaponType: 3
+  weaponType: 1
   meshRenderer: {fileID: 0}
   playerInventory: {fileID: 0}

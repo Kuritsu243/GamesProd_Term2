@@ -1,3 +1,4 @@
+using Environment.ZipLine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -20,6 +21,7 @@ namespace Player.Input
         [SerializeField] private LayerMask layerMask;
         private InputSystem _inputSystem;
         private Camera _playerCamera;
+        private PlayerMovement _playerMovement;
 
 
         private float _mouseX;
@@ -33,6 +35,7 @@ namespace Player.Input
         {
             _inputSystem = GetComponent<InputSystem>();
             _playerCamera = GetComponentInChildren<Camera>();
+            _playerMovement = GetComponent<PlayerMovement>();
             _playerCamera.fieldOfView = cameraFOV;
         }
 
@@ -61,16 +64,25 @@ namespace Player.Input
         {
             var rayOrigin = _playerCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
             if (!Physics.Raycast(rayOrigin, out var hit, maxInteractDistance)) return;
-            switch (hit.transform.tag)
+            switch (hit.transform.root.tag)
             {
                 case "Card":
                     var collidedCard = hit.transform.gameObject;
                     collidedCard.GetComponent<cardController>().CollectCard();
                     break;
+                case "Zipline":
+                    var collidedZip = hit.transform.root.gameObject;
+                    var zipController = collidedZip.GetComponent<ZipLineController>();
+                    zipController.StartZipline();
+                    zipController.IsZiplining = true;
+                    _playerMovement.IsZipLining = true;
+                    break;
                 case null:
                     Debug.Log("this has no tag");
+                    
                     break;
             }
+            Debug.Log(hit.transform.root.tag);
         
         }
     

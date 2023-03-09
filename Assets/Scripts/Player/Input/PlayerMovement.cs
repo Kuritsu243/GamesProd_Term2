@@ -27,6 +27,8 @@ namespace Player.Input
         private bool _isPlayerJumping;
         private bool _isDashing;
         private bool _isInDashCooldown;
+
+        public bool IsZipLining { get; set; }
         private void Start()
         {
             _inputSystem = GetComponent<InputSystem>();
@@ -43,10 +45,11 @@ namespace Player.Input
 
         private void HandleMovement()
         {
+            if (IsZipLining) return;
             CheckIfGrounded();
             if (_isGrounded)
                 _verticalVelocity.y = 0f;
-
+            
             _playerVelocity = _isDashing switch
             {
                 true => (transform.right * _inputSystem.HorizontalInput + transform.forward * _inputSystem.VerticalInput) *

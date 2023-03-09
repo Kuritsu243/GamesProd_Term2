@@ -54,6 +54,7 @@ namespace Player.Shooting
         [SerializeField] private GameObject rightDualWieldSpawnPos;
         [SerializeField] private GameObject rocketSpawnPos;
         [SerializeField] private GameObject shotgunSpawnPos;
+        [SerializeField] private GameObject pistolSpawnPos;
         [Header("Firing Cooldown Lengths")] 
         [SerializeField] private float dualWieldCooldown;
         [SerializeField] private float pistolCooldown;
@@ -132,7 +133,23 @@ namespace Player.Shooting
 
         private void PistolFire()
         {
+            var rayOrigin = _playerCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
+            if (!Physics.Raycast(rayOrigin, out var hit, maxInteractDistance)) return;
+            TrailRenderer trail = Instantiate(bulletTrail, pistolSpawnPos.transform.position, Quaternion.identity);
+            StartCoroutine(SpawnTrail(trail, hit));
+            switch (hit.transform.tag)
+            {
+                case "Enemy":
+                    var collidedEnemy = hit.transform.gameObject;
+                    collidedEnemy.GetComponent<EnemyController>().TakeDamage(pistolDamage);
 
+                    break;
+            }
+
+            StartCoroutine(WeaponFiringCooldown(pistolCooldown));
+            CurrentAmmo--;
+            if (CurrentAmmo > 0) return;
+            _playerInventory.ExpireWeapon(_playerInventory.CurrentCard);
         }
 
         private void ShotgunFire()
