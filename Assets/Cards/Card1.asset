@@ -22,6 +22,6 @@ MonoBehaviour:
   weaponDamage: 0
   weaponAmmo: 0
   buffType: 0
-  weaponType: 0
+  weaponType: 3
   meshRenderer: {fileID: 0}
   playerInventory: {fileID: 0}

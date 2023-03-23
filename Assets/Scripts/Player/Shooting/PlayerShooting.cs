@@ -174,7 +174,7 @@ namespace Player.Shooting
             //     }
             //     else
             //     {
-            //         var spawnedObj = Instantiate(emptyObj, shotgunSpawnPosMouse.current.position.ReadValue() + accuracy,
+            //         var spawnedObj = Instantiate(emptyObj, shotgunSpawnPos, Mouse.current.position.ReadValue() + accuracy,
             //             Quaternion.identity);
             //
             //         var altTrail = Instantiate(bulletTrail, shotgunSpawnPos.transform.position , Quaternion.identity);
