@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cards;
 using Enemies;
 using Player.Inventory;
 using Projectiles;
+using Unity.Android.Types;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -61,8 +63,16 @@ namespace Player.Shooting
         [SerializeField] private float magicCooldown;
         [SerializeField] private float shotgunCooldown;
         [SerializeField] private float rocketCooldown;
-
+        [Header("Damage Buff Settings")] 
+        [SerializeField] private float buffDuration;
+        
+        
+        
         public int CurrentAmmo { get; set; }
+        public bool IsDamageBuffActive { get; set; }
+        public bool IsJumpBuffActive { get; set; }
+        public float BuffRemaining { get => buffRemaining; set => buffRemaining = value; }
+        public float BuffLength { get => buffDuration; set => buffDuration = value; }
         private PlayerInventory _playerInventory;
         private Camera _playerCamera;
         private GameObject _projectileSpawnPoint;
@@ -73,6 +83,7 @@ namespace Player.Shooting
         private bool _traceAtLeftDualWield = true;
         private bool _traceAtRightDualWield;
         private bool _canFire;
+        private float buffRemaining;
 
         // Start is called before the first frame update
         private void Start()
@@ -373,6 +384,32 @@ namespace Player.Shooting
             yield return new WaitForSeconds(cooldownLength);
             _canFire = true;
         }
+
+        public void StartDamageBuff()
+        {
+            IsDamageBuffActive = true;
+            _playerInventory.CanvasScript.ShowBuffDurationUI();
+            StartCoroutine(BuffDuration(buffDuration));
+        }
+
+        private int CalculateBuffedDamage()
+        {
+            return 0;
+        }
+
+        private IEnumerator BuffDuration(float buffLength)
+        {
+            buffRemaining = buffLength;
+            while (buffRemaining > 0.01f)
+            {
+                buffRemaining -= Time.deltaTime;
+                yield return null;
+            }
+            IsDamageBuffActive = false;
+            _playerInventory.CanvasScript.HideBuffDurationUI();
+        }
+
+
 
 
 

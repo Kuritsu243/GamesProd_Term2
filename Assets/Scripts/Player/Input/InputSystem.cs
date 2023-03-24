@@ -1,3 +1,5 @@
+using System;
+using Cards;
 using Player.Inventory;
 using Player.Shooting;
 using UnityEngine;
@@ -48,6 +50,7 @@ namespace Player.Input
                 _playerControls.playerInput.playerChangeItemMode.performed +=
                     _ => _playerInventory.ChangeActiveCardMode();
                 _playerControls.playerInput.playerFire.performed += _ => _playerShooting.Fire();
+                _playerControls.playerInput.playerActiveBuff.performed += _ => ActivateBuff();
             }
 
             _playerControls.Enable();
@@ -104,6 +107,24 @@ namespace Player.Input
                     ScrollUp = false;
                     ScrollDown = false;
                     break;
+            }
+        }
+        
+        private void ActivateBuff()
+        {
+            switch (_playerInventory.CurrentCard.buffType)
+            {
+                case cardObject.BuffType.Damage:
+                    _playerShooting.StartDamageBuff();
+                    break;
+                case cardObject.BuffType.Dash:
+                    break;
+                case cardObject.BuffType.JumpHeight:
+                    break;
+                case cardObject.BuffType.Speed:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
