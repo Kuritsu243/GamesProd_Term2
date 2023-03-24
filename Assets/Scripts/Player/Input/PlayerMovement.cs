@@ -1,4 +1,6 @@
 using System.Collections;
+using Cards;
+using Player.Inventory;
 using UnityEngine;
 
 namespace Player.Input
@@ -14,6 +16,8 @@ namespace Player.Input
         [SerializeField] private float playerDashMultiplier;
         [SerializeField] private float playerDashCooldown;
         [SerializeField] private float playerDashDuration;
+        [Header("Player Jump")] 
+        [SerializeField] private float playerJumpHeightModifier;
         [Header("What layer is classed as floor")]
         [SerializeField] private LayerMask groundMask;
 
@@ -21,6 +25,7 @@ namespace Player.Input
         private InputSystem _inputSystem;
         private CharacterController _characterController;
         private PlayerMouseLook _playerMouseLook;
+        private PlayerInventory _playerInventory;
         private Vector3 _playerVelocity;
         private Vector3 _verticalVelocity = Vector3.zero;
         private bool _isGrounded;
@@ -34,6 +39,7 @@ namespace Player.Input
             _inputSystem = GetComponent<InputSystem>();
             _characterController = GetComponent<CharacterController>();
             _playerMouseLook = GetComponent<PlayerMouseLook>();
+            _playerInventory = GetComponent<PlayerInventory>();
         }
 
         // Update is called once per frame
@@ -65,8 +71,11 @@ namespace Player.Input
                 case true when !_isGrounded:
                     _isPlayerJumping = false;
                     break;
-                case true when _isGrounded:
+                case true when _isGrounded && !_playerInventory.CheckIfJumpHeightBuff():
                     _verticalVelocity.y = Mathf.Sqrt(-2f * playerJumpHeight * playerGravity);
+                    break;
+                case true when _isGrounded && _playerInventory.CheckIfJumpHeightBuff():
+                    _verticalVelocity.y = Mathf.Sqrt(-2f * (playerJumpHeight + playerJumpHeightModifier) * playerGravity);
                     break;
                 case false:
                     break;
@@ -86,6 +95,7 @@ namespace Player.Input
         public void Dash()
         {
             if (_isInDashCooldown) return;
+            if (!_playerInventory.CheckIfCanDash()) return;
             _isDashing = true;
             _verticalVelocity.y = 0.0f;
             StartCoroutine(DashCooldown());
@@ -95,6 +105,8 @@ namespace Player.Input
         {
             _isGrounded = _characterController.isGrounded;
         }
+
+        
 
         private void HandleAllMovement()
         {

@@ -18,8 +18,8 @@ namespace Player.Inventory
         private int _nextItemIndex;
         private PlayerActiveItem _playerActiveItem;
         private InputSystem _inputSystem;
-    
-    
+
+
         //encapsulated
         public List<cardObject> CurrentCards => _currentCards;
         public cardObject CurrentCard { get; set; }
@@ -27,6 +27,13 @@ namespace Player.Inventory
         public bool IsInBuffMode { get; set; }
         public bool IsInWeaponMode { get; set; }
         public int ActiveItemIndex { get; set; }
+        
+        public canvasScript CanvasScript
+        {
+            get => _canvasScript;
+            set => _canvasScript = value;
+        }
+        
         public void AddToInventory(cardObject cardToAdd)
         {
             if (_currentCards.Count >= invSize) return;
@@ -43,7 +50,11 @@ namespace Player.Inventory
             _canvasScript.ToggleInventory(cardIndex);
         }
 
-
+        public bool CheckIfCanDash()
+        {
+            return CurrentCard.buffType == cardObject.BuffType.Dash && IsInBuffMode;
+        }
+        
         public void ChangeActiveItem()
         {
             if (_currentCards.Count == 1)
@@ -71,10 +82,7 @@ namespace Player.Inventory
             _playerActiveItem.ChangeActiveModel(CurrentCard);
         }
 
-        private void FixedUpdate()
-        {
-        
-        }
+
     
         private void Start()
         {
@@ -120,6 +128,11 @@ namespace Player.Inventory
             var cardToExpireIndex = _currentCards.IndexOf(card);
             _currentCards.RemoveAt(cardToExpireIndex);
             SetActiveCard(_currentCards.LastIndexOf(_currentCards.Last()));
+        }
+
+        public bool CheckIfJumpHeightBuff()
+        {
+            return CurrentCard.buffType == cardObject.BuffType.JumpHeight && IsInBuffMode;
         }
     }
 }

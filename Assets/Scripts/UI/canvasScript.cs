@@ -19,6 +19,8 @@ namespace UI
         private PlayerActiveItem _playerActiveItem;
         private GameObject _inventoryUI;
         private GameObject _cardSprite;
+        private GameObject _buffDurationUI;
+        private Image _buffDurationForeground;
         private TextMeshProUGUI _activeItemText;
         private TextMeshProUGUI _activeItemNoText;
         private TextMeshProUGUI _activeItemMode;
@@ -44,7 +46,6 @@ namespace UI
             _playerInventory = _player.GetComponent<PlayerInventory>();
             _playerActiveItem = _player.GetComponent<PlayerActiveItem>();
             _inventoryUI = GameObject.FindGameObjectWithTag("inventoryUI");
-            _inventoryUI.SetActive(false);
             _activeItemText = GameObject.FindGameObjectWithTag("activeItem").GetComponent<TextMeshProUGUI>();
             _activeItemNoText = GameObject.FindGameObjectWithTag("activeItemSlot").GetComponent<TextMeshProUGUI>();
             _activeItemMode = GameObject.FindGameObjectWithTag("activeItemMode").GetComponent<TextMeshProUGUI>();
@@ -53,7 +54,12 @@ namespace UI
             _cardInfoDesc = GameObject.FindGameObjectWithTag("newCardDesc").GetComponent<TextMeshProUGUI>();
             _currentAmmoText = GameObject.FindGameObjectWithTag("ammoText").GetComponent<TextMeshProUGUI>();
             _cardSprite = GameObject.FindGameObjectWithTag("cardSprite");
+            _buffDurationUI = GameObject.FindGameObjectWithTag("buffDurationUI");
+            _buffDurationForeground = _buffDurationUI.GetComponentInChildren<Image>();
+            
             _cardInfoUI.SetActive(false);
+            _buffDurationUI.SetActive(false);
+            _inventoryUI.SetActive(false);
             foreach (var inventorySlot in inventorySlots)
             {
                 inventorySlot.SetActive(false);
@@ -74,6 +80,9 @@ namespace UI
                 false and false => _playerInventory.CurrentCard.weaponType.ToString(),
                 _ => "",
             };
+
+            if (!_buffDurationUI.activeSelf) return;
+            _buffDurationForeground.fillAmount = (_playerShooting.BuffRemaining / _playerShooting.BuffLength);
             // if (_playerInventory.CurrentCard.isInBuffMode && !_playerInventory.CurrentCard.isInWeaponMode)
             // {
             //     _activeItemMode.text = "Buff Mode";
@@ -155,6 +164,22 @@ namespace UI
             _cardInfoDesc.text = "";
             _cardInfoUI.SetActive(false);
             Time.timeScale = 1f;
+        }
+
+        public void ShowBuffDurationUI()
+        {
+           _buffDurationUI.SetActive(true);
+           _buffDurationForeground.fillAmount = (_playerShooting.BuffLength / _playerShooting.BuffRemaining) / 100f;
+        }
+        
+        // if (uoutmomgsy)
+        // {
+        //     Debug.Log("your mom gay");
+        // }
+
+        public void HideBuffDurationUI()
+        {
+            _buffDurationUI.SetActive(false);
         }
     
     
