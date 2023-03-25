@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using Cards;
 using Enemies;
 using Player.Inventory;
+using Player.Buff;
 using Projectiles;
-using Unity.Android.Types;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -63,17 +63,15 @@ namespace Player.Shooting
         [SerializeField] private float magicCooldown;
         [SerializeField] private float shotgunCooldown;
         [SerializeField] private float rocketCooldown;
-        [Header("Damage Buff Settings")] 
-        [SerializeField] private float buffDuration;
-        
-        
-        
+
+
+
         public int CurrentAmmo { get; set; }
         public bool IsDamageBuffActive { get; set; }
         public bool IsJumpBuffActive { get; set; }
-        public float BuffRemaining { get => buffRemaining; set => buffRemaining = value; }
-        public float BuffLength { get => buffDuration; set => buffDuration = value; }
+   
         private PlayerInventory _playerInventory;
+        private PlayerBuff _playerBuff;
         private Camera _playerCamera;
         private GameObject _projectileSpawnPoint;
         private GameObject _traceSpawnPoint;
@@ -89,6 +87,7 @@ namespace Player.Shooting
         private void Start()
         {
             _playerInventory = GetComponent<PlayerInventory>();
+            _playerBuff = GetComponent<PlayerBuff>();
             _playerCamera = GetComponentInChildren<Camera>();
             _projectileSpawnPoint = GameObject.FindGameObjectWithTag("projSpawnPoint");
             CurrentAmmo = 50;
@@ -131,8 +130,10 @@ namespace Player.Shooting
             {
                 case "Enemy":
                     var collidedEnemy = hit.transform.gameObject;
-                    collidedEnemy.GetComponent<EnemyController>().TakeDamage(dualWieldDamage);
-
+                    if (_playerBuff.IsDamageBuffActive)
+                        collidedEnemy.GetComponent<EnemyController>().TakeDamage(CalculateBuffedDamage(dualWieldDamage));
+                    else
+                        collidedEnemy.GetComponent<EnemyController>().TakeDamage(dualWieldDamage);
                     break;
             }
 
@@ -165,110 +166,6 @@ namespace Player.Shooting
 
         private void ShotgunFire()
         {
-            // for (int i = 0; i < shotgunPelletCount; i++)
-            // {
-            //     var accuracy = (Random.insideUnitCircle * shotgunSpreadSizeInt);
-            //     var ray = _playerCamera.ScreenPointToRay(Mouse.current.position.ReadValue() + accuracy);
-            //     if (Physics.Raycast(ray, out var hit))
-            //     {
-            //         var trail = Instantiate(bulletTrail, shotgunSpawnPos.transform.position, Quaternion.identity);
-            //         StartCoroutine(SpawnTrail(trail, hit));
-            //         switch (hit.transform.tag)
-            //         {
-            //             case "Enemy":
-            //                 var enemyScript = hit.transform.gameObject.GetComponent<EnemyController>();
-            //                 enemyScript.TakeDamage(shotgunDamage);
-            //                 break;
-            //             case null:
-            //                 break;
-            //         }
-            //     }
-            //     else
-            //     {
-            //         var spawnedObj = Instantiate(emptyObj, shotgunSpawnPos, Mouse.current.position.ReadValue() + accuracy,
-            //             Quaternion.identity);
-            //
-            //         var altTrail = Instantiate(bulletTrail, shotgunSpawnPos.transform.position , Quaternion.identity);
-            //         StartCoroutine(SpawnTrailAlternative(altTrail, spawnedObj.transform.position, spawnedObj));
-            //     }
-            //
-            // }
-            
-            
-            // for (var i = 0; i < shotgunPelletCount; i++)
-            // {
-            //     var accuracy = (Random.insideUnitCircle * shotgunSpreadSizeInt);
-            //     var ray = _playerCamera.ScreenPointToRay(Mouse.current.position.ReadValue() + accuracy);
-            //     if (Physics.Raycast(ray, out var hit, float.MaxValue))
-            //     {
-            //         var trail = Instantiate(bulletTrail, shotgunSpawnPos.transform.position, Quaternion.identity);
-            //         StartCoroutine(SpawnTrail(trail, hit));
-            //         switch (hit.transform.tag)
-            //         {
-            //             case "Enemy":
-            //                 var enemyScript = hit.transform.gameObject.GetComponent<EnemyController>();
-            //                 enemyScript.TakeDamage(shotgunDamage);
-            //                 break;
-            //             case null:
-            //                 break;
-            //         }
-            //     }
-            //     else
-            //     {
-            //         var trail = Instantiate(bulletTrail, shotgunSpawnPos.transform.position, Quaternion.identity);
-            //         StartCoroutine(
-            //             SpawnTrailAlternative(trail, transform.position + GetDirection() * 100, Vector3.zero));
-            //     }
-            //
-            // }
-
-
-
-            //
-            // var accuracy = Random.insideUnitCircle * shotgunSpreadSizeInt;
-            // var dir = new Vector3(accuracy.x, accuracy.y, 1f);
-            // var hasHitraycast = false;
-            // var sprayDir = transform.TransformVector(dir);
-            // Debug.ClearDeveloperConsole();
-            // Debug.Log(accuracy);
-            // var ray = _playerCamera.ScreenPointToRay(Mouse.current.position.ReadValue() + accuracy);
-            // Vector3 targetPoint;
-            // if (Physics.Raycast(ray, out var hit))
-            // {
-            //     targetPoint = hit.point;
-            //     hasHitraycast = true;
-            // }
-            // else
-            // {
-            //     targetPoint = shotgunSpawnPos.transform.position + GetDirection() * 100f;
-            //     hasHitraycast = false;
-            // }
-            // // var targetPoint = Physics.Raycast(ray, out var hit)
-            // //     ? hit.point
-            // //     : shotgunSpawnPos.transform.position + GetDirection() * 100f;
-            // TrailRenderer trail = Instantiate(bulletTrail, shotgunSpawnPos.transform.position, Quaternion.identity);
-            // StartCoroutine(SpawnTrailAlternative(trail, targetPoint));
-            // if (hasHitraycast)
-            // {
-            //     switch (hit.transform.tag)
-            //     {
-            //         case "Enemy":
-            //             var collidedEnemy = hit.transform.gameObject;
-            //             collidedEnemy.GetComponent<EnemyController>().TakeDamage(shotgunDamage);
-            //             break;
-            //         case null:
-            //             break;
-            //     }
-            // }
-            //
-            //
-            // CurrentAmmo--;
-            // if (CurrentAmmo > 0) return;
-            // _playerInventory.ExpireWeapon(_playerInventory.CurrentCard);
-            // if (!Physics.Raycast(rayOrigin, out var hit, maxInteractDistance)) return;
-
-
-            
             var pellets = new List<Quaternion>(shotgunPelletCount);
             for (var i = 0; i < shotgunPelletCount; i++) pellets.Add(Quaternion.Euler(Vector3.zero));
             for (var h = 0; h < shotgunPelletCount; h++)
@@ -277,7 +174,11 @@ namespace Player.Shooting
                 var pellet = Instantiate(pelletProjectile, shotgunSpawnPos.transform.position, shotgunSpawnPos.transform.rotation);
                 pellet.transform.rotation = Quaternion.RotateTowards(pellet.transform.rotation, pellets[h], shotgunSpreadSizeInt);
                 var pelletScript = pellet.GetComponent<ShotgunProjectile>();
-                pelletScript.Initialize(shotgunDamage, shotgunPelletSpeed, shotgunPelletDespawnTime, shotgunSpawnPos.transform.forward);
+                if (_playerBuff.IsDamageBuffActive)
+                    pelletScript.Initialize(CalculateBuffedDamage(shotgunDamage), shotgunPelletSpeed, shotgunPelletDespawnTime, shotgunSpawnPos.transform.forward);
+                else
+                    pelletScript.Initialize(shotgunDamage, shotgunPelletSpeed, shotgunPelletDespawnTime, shotgunSpawnPos.transform.forward);
+                
                 var pelletRigidbody = pellet.GetComponent<Rigidbody>();
                 // pelletRigidbody.velocity = shotgunSpawnPos.transform.forward * shotgunPelletSpeed;
             }
@@ -307,7 +208,10 @@ namespace Player.Shooting
             _spawnedProjectile.transform.forward = direction.normalized; // set forward to the normalized direction
             var rocketRigidbody = _spawnedProjectile.GetComponent<Rigidbody>(); // get rb
             var rocketScript = _spawnedProjectile.GetComponent<RocketProjectile>(); // get script
-            rocketScript.Initialize(rocketDamage, rocketProjectileSpeed, rocketDespawnTime, rocketExplosionRadius); // passthrough values
+            if (_playerBuff.IsDamageBuffActive)
+                rocketScript.Initialize(CalculateBuffedDamage(rocketDamage), rocketProjectileSpeed, rocketDespawnTime, rocketExplosionRadius); // passthrough values
+            else
+                rocketScript.Initialize(rocketDamage, rocketProjectileSpeed, rocketDespawnTime, rocketExplosionRadius); // passthrough values
             rocketRigidbody.AddForce(direction.normalized * rocketProjectileSpeed, ForceMode.Impulse); // add the force
             CurrentAmmo--; // deplete ammo
             if (CurrentAmmo > 0) return; // if less than 0 ammo
@@ -385,29 +289,13 @@ namespace Player.Shooting
             _canFire = true;
         }
 
-        public void StartDamageBuff()
-        {
-            IsDamageBuffActive = true;
-            _playerInventory.CanvasScript.ShowBuffDurationUI();
-            StartCoroutine(BuffDuration(buffDuration));
-        }
 
-        private int CalculateBuffedDamage()
-        {
-            return 0;
-        }
 
-        private IEnumerator BuffDuration(float buffLength)
+        private float CalculateBuffedDamage(int originalDamageAmount)
         {
-            buffRemaining = buffLength;
-            while (buffRemaining > 0.01f)
-            {
-                buffRemaining -= Time.deltaTime;
-                yield return null;
-            }
-            IsDamageBuffActive = false;
-            _playerInventory.CanvasScript.HideBuffDurationUI();
+            return originalDamageAmount * _playerBuff.DamageBuffModifier;
         }
+        
 
 
 

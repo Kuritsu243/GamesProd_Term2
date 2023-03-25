@@ -5,9 +5,9 @@ namespace Player.Health
     public class PlayerHealth : MonoBehaviour
     {
         [Header("Health Settings")] 
-        [SerializeField] private int maxHealth;
+        [SerializeField] private float maxHealth;
 
-        public int CurrentHealth { get; set; }
+        public float CurrentHealth { get; set; }
 
         // Start is called before the first frame update
         private void Start()
@@ -26,7 +26,7 @@ namespace Player.Health
             Debug.Log("player died");
         }
 
-        public void Damage(int damageAmount)
+        public void Damage(float damageAmount)
         {
             CurrentHealth -= damageAmount;
             if (CurrentHealth <= 0) Die();

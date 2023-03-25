@@ -53,9 +53,11 @@ namespace UI.StartMenu
         {
             switch (Application.platform)
             {
+#if UNITY_EDITOR
                 case RuntimePlatform.WindowsEditor:
                     EditorApplication.ExitPlaymode();
                     break;
+#endif
                 case RuntimePlatform.WindowsPlayer:
                     Application.Quit();
                     break;

@@ -50,10 +50,10 @@ namespace Player.Inventory
             _canvasScript.ToggleInventory(cardIndex);
         }
 
-        public bool CheckIfCanDash()
-        {
-            return CurrentCard.buffType == cardObject.BuffType.Dash && IsInBuffMode;
-        }
+        // public bool CheckIfCanDash()
+        // {
+        //     return CurrentCard.buffType == cardObject.BuffType.Dash && IsInBuffMode;
+        // }
         
         public void ChangeActiveItem()
         {
@@ -129,10 +129,6 @@ namespace Player.Inventory
             _currentCards.RemoveAt(cardToExpireIndex);
             SetActiveCard(_currentCards.LastIndexOf(_currentCards.Last()));
         }
-
-        public bool CheckIfJumpHeightBuff()
-        {
-            return CurrentCard.buffType == cardObject.BuffType.JumpHeight && IsInBuffMode;
-        }
+        
     }
 }

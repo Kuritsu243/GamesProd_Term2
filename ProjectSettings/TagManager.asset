@@ -19,6 +19,8 @@ TagManager:
   - ammoText
   - projSpawnPoint
   - enemyProjSpawn
+  - Zipline
+  - buffDurationUI
   layers:
   - Default
   - TransparentFX
@@ -28,7 +30,7 @@ TagManager:
   - UI
   - Floor
   - FPSView
-  - 
+  - PostProcessing
   - 
   - 
   - 

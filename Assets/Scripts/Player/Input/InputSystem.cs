@@ -1,5 +1,6 @@
 using System;
 using Cards;
+using Player.Buff;
 using Player.Inventory;
 using Player.Shooting;
 using UnityEngine;
@@ -11,6 +12,7 @@ namespace Player.Input
     {
         // private
         private PlayerControls _playerControls;
+        private PlayerBuff _playerBuff;
         private PlayerMovement _playerMovement;
         private PlayerMouseLook _playerMouseLook;
         private PlayerInventory _playerInventory;
@@ -50,7 +52,7 @@ namespace Player.Input
                 _playerControls.playerInput.playerChangeItemMode.performed +=
                     _ => _playerInventory.ChangeActiveCardMode();
                 _playerControls.playerInput.playerFire.performed += _ => _playerShooting.Fire();
-                _playerControls.playerInput.playerActiveBuff.performed += _ => ActivateBuff();
+                _playerControls.playerInput.playerActiveBuff.performed += _ => _playerBuff.CallStartBuff(_playerInventory.CurrentCard);
             }
 
             _playerControls.Enable();
@@ -69,6 +71,7 @@ namespace Player.Input
             _playerMouseLook = GetComponent<PlayerMouseLook>();
             _playerInventory = GetComponent<PlayerInventory>();
             _playerShooting = GetComponent<PlayerShooting>();
+            _playerBuff = GetComponent<PlayerBuff>();
         }
 
         public void HandleAllInputs()
@@ -110,23 +113,6 @@ namespace Player.Input
             }
         }
         
-        private void ActivateBuff()
-        {
-            switch (_playerInventory.CurrentCard.buffType)
-            {
-                case cardObject.BuffType.Damage:
-                    _playerShooting.StartDamageBuff();
-                    break;
-                case cardObject.BuffType.Dash:
-                    break;
-                case cardObject.BuffType.JumpHeight:
-                    break;
-                case cardObject.BuffType.Speed:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
 
     }
 }

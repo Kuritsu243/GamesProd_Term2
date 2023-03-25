@@ -2,6 +2,7 @@ using System.Collections;
 using Cards;
 using Player;
 using Player.Health;
+using Player.Buff;
 using Player.Inventory;
 using Player.Shooting;
 using TMPro;
@@ -16,6 +17,7 @@ namespace UI
         [SerializeField] private int timeToShowNewCard;
         private GameObject _player;
         private PlayerInventory _playerInventory;
+        private PlayerBuff _playerBuff;
         private PlayerActiveItem _playerActiveItem;
         private GameObject _inventoryUI;
         private GameObject _cardSprite;
@@ -42,6 +44,7 @@ namespace UI
             _player = GameObject.FindGameObjectWithTag("Player");
             _playerShooting = _player.GetComponent<PlayerShooting>();
             _playerHealth = _player.GetComponent<PlayerHealth>();
+            _playerBuff = _player.GetComponent<PlayerBuff>();
             _currentHealthText = GameObject.FindGameObjectWithTag("currentHealth").GetComponent<TextMeshProUGUI>();
             _playerInventory = _player.GetComponent<PlayerInventory>();
             _playerActiveItem = _player.GetComponent<PlayerActiveItem>();
@@ -82,7 +85,7 @@ namespace UI
             };
 
             if (!_buffDurationUI.activeSelf) return;
-            _buffDurationForeground.fillAmount = (_playerShooting.BuffRemaining / _playerShooting.BuffLength);
+            _buffDurationForeground.fillAmount = (_playerBuff.BuffRemaining / _playerBuff.CurrentBuffDuration);
             // if (_playerInventory.CurrentCard.isInBuffMode && !_playerInventory.CurrentCard.isInWeaponMode)
             // {
             //     _activeItemMode.text = "Buff Mode";
@@ -167,9 +170,8 @@ namespace UI
         }
 
         public void ShowBuffDurationUI()
-        {
-           _buffDurationUI.SetActive(true);
-           _buffDurationForeground.fillAmount = (_playerShooting.BuffLength / _playerShooting.BuffRemaining) / 100f;
+        { 
+            _buffDurationUI.SetActive(true);
         }
         
         // if (uoutmomgsy)

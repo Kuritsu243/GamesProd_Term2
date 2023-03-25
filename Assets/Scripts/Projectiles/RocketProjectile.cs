@@ -9,7 +9,7 @@ namespace Projectiles
     {
         private Rigidbody _rocketRigidbody;
         private Collider _rocketCollider;
-        private int _rocketDamage;
+        private float _rocketDamage;
         private int _rocketSpeed;
         private int _rocketDespawnTime;
         private int _rocketSplashRadius;
@@ -23,7 +23,7 @@ namespace Projectiles
         }
         
 
-        public void Initialize(int damage, int projectileSpeed, int despawnTime, int splashRadius)
+        public void Initialize(float damage, int projectileSpeed, int despawnTime, int splashRadius)
         {
             _rocketDamage = damage;
             _rocketSpeed = projectileSpeed;

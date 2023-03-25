@@ -29,7 +29,7 @@ namespace Enemies
 
 
         [Header("Enemy Health")] [SerializeField]
-        private int maxHealth;
+        private float maxHealth;
 
         [Header("Enemy Attack Settings")] [SerializeField]
         private int meleeAttackRange;
@@ -49,7 +49,7 @@ namespace Enemies
         private int playerDetectionRadius;
 
 
-        private int _currentHealth;
+        private float _currentHealth;
         private NavMeshAgent _navMeshAgent;
         private GameObject _player;
         private GameObject _enemyProjSpawnPos;
@@ -97,7 +97,7 @@ namespace Enemies
         }
 
 
-        public void TakeDamage(int damageAmount)
+        public void TakeDamage(float damageAmount)
         {
             _currentHealth -= damageAmount;
             if (_currentHealth <= 0) Die();

@@ -94,6 +94,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "playerActiveBuff",
+                    "type": "Button",
+                    "id": "c68c9021-928f-4973-a787-4260ca5291ad",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -248,6 +257,17 @@
                     "processors": "",
                     "groups": "KB+M",
                     "action": "playerChangeItemMode",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "19b1c9f2-4ed7-4b9e-a741-1746651b0b95",
+                    "path": "<Keyboard>/b",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KB+M",
+                    "action": "playerActiveBuff",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

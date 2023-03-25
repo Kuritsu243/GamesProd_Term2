@@ -21,7 +21,7 @@ MonoBehaviour:
   crosshairSprite: {fileID: 0}
   weaponDamage: 0
   weaponAmmo: 0
-  buffType: 0
+  buffType: 3
   weaponType: 3
   meshRenderer: {fileID: 0}
   playerInventory: {fileID: 0}

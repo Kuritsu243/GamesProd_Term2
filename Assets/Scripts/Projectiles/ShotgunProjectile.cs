@@ -10,7 +10,7 @@ namespace Projectiles
     {
         private Rigidbody _pelletRigidbody;
         private Collider _pelletCollider;
-        private int _pelletDamage;
+        private float _pelletDamage;
         private int _pelletSpeed;
         private int _pelletDespawnTime;
         private Vector3 _direction;
@@ -21,7 +21,7 @@ namespace Projectiles
         }
 
 
-        public void Initialize(int damage, int projectileSpeed, int despawnTime, Vector3 spawnDirection)
+        public void Initialize(float damage, int projectileSpeed, int despawnTime, Vector3 spawnDirection)
         {
             _pelletDamage = damage;
             _pelletSpeed = projectileSpeed;
