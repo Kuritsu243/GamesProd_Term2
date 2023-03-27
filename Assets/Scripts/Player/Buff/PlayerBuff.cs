@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Cards;
 using Player.Inventory;
+using PostProcessing;
 using UnityEngine;
 
 namespace Player.Buff
@@ -23,6 +24,7 @@ namespace Player.Buff
         [SerializeField] private float speedBuffDuration;
 
         private PlayerInventory _playerInventory;
+        private PostProcessingController _postProcessingController;
         private float _buffRemaining;
         
         public float CurrentBuffDuration { get; set; }
@@ -62,6 +64,8 @@ namespace Player.Buff
         private void Start()
         {
             _playerInventory = GetComponent<PlayerInventory>();
+            _postProcessingController = GameObject.FindGameObjectWithTag("postProcessingController")
+                .GetComponent<PostProcessingController>();
         }
 
         private bool IsBuffActive()
@@ -77,6 +81,7 @@ namespace Player.Buff
             StartCoroutine(BuffDuration(damageBuffDuration));
             if (!_playerInventory.IsInBuffMode) return;
             _playerInventory.ChangeActiveCardMode();
+            _postProcessingController.ToggleVignette(_playerInventory.CurrentCard.buffType);
         }
         
         
@@ -87,6 +92,7 @@ namespace Player.Buff
             StartCoroutine(BuffDuration(jumpBuffDuration));
             if (!_playerInventory.IsInBuffMode) return;
             _playerInventory.ChangeActiveCardMode();
+            _postProcessingController.ToggleVignette(_playerInventory.CurrentCard.buffType);
         }
 
         private void StartDashBuff()
@@ -96,6 +102,7 @@ namespace Player.Buff
             StartCoroutine(BuffDuration(dashBuffDuration));
             if (!_playerInventory.IsInBuffMode) return;
             _playerInventory.ChangeActiveCardMode();
+            _postProcessingController.ToggleVignette(_playerInventory.CurrentCard.buffType);
         }
 
         private void StartSpeedBuff()
@@ -105,6 +112,7 @@ namespace Player.Buff
             StartCoroutine(BuffDuration(speedBuffDuration));
             if (!_playerInventory.IsInBuffMode) return;
             _playerInventory.ChangeActiveCardMode();
+            _postProcessingController.ToggleVignette(_playerInventory.CurrentCard.buffType);
             
         }
 
@@ -129,6 +137,7 @@ namespace Player.Buff
             else if (IsDashBuffActive)
                 IsDashBuffActive = false;
             
+            _postProcessingController.DisableVignette();
             _playerInventory.CanvasScript.HideBuffDurationUI();
         }
 

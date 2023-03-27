@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Cards;
 using Player.Inventory;
@@ -60,15 +61,18 @@ namespace Player.Input
             CheckIfGrounded();
             if (_isGrounded)
                 _verticalVelocity.y = 0f;
-            
+
             _playerVelocity = _isDashing switch
             {
-                true => (transform.right * _inputSystem.HorizontalInput + transform.forward * _inputSystem.VerticalInput) *
-                        (playerSpeed * playerDashMultiplier),
-                false when !_playerBuff.IsSpeedBuffActive => (transform.right * _inputSystem.HorizontalInput + transform.forward * _inputSystem.VerticalInput) * 
-                                                            playerSpeed,
-                false when _playerBuff.IsSpeedBuffActive => (transform.right * _inputSystem.HorizontalInput + transform.forward * _inputSystem.VerticalInput) *
-                                                            (playerSpeed * _playerBuff.SpeedBuffModifier)
+                true => (transform.right * _inputSystem.HorizontalInput +
+                         transform.forward * _inputSystem.VerticalInput) * (playerSpeed * playerDashMultiplier),
+                false when !_playerBuff.IsSpeedBuffActive => (transform.right * _inputSystem.HorizontalInput +
+                                                              transform.forward * _inputSystem.VerticalInput) *
+                                                             playerSpeed,
+                false when _playerBuff.IsSpeedBuffActive => (transform.right * _inputSystem.HorizontalInput +
+                                                             transform.forward * _inputSystem.VerticalInput) *
+                                                            (playerSpeed * _playerBuff.SpeedBuffModifier),
+                _ => throw new ArgumentOutOfRangeException(nameof(_isDashing))
             };
 
             _characterController.Move(_playerVelocity * Time.deltaTime);

@@ -2357,7 +2357,7 @@ GameObject:
   - component: {fileID: 1538979089}
   m_Layer: 0
   m_Name: Post Processing
-  m_TagString: Untagged
+  m_TagString: postProcessingController
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2374,18 +2374,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 198e39be92d54754882d99160fbe7f06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageBuffColour:
-    m_OverrideState: 0
-    m_Value: {r: 0.9528302, g: 0.032959424, b: 0.032959424, a: 0}
-  speedBuffColour:
-    m_OverrideState: 0
-    m_Value: {r: 0, g: 0, b: 0, a: 0}
-  jumpBuffColour:
-    m_OverrideState: 0
-    m_Value: {r: 0, g: 0, b: 0, a: 0}
-  dashBuffColour:
-    m_OverrideState: 0
-    m_Value: {r: 0, g: 0, b: 0, a: 0}
+  damageBuffColour: {r: 1, g: 0, b: 0, a: 0}
+  speedBuffColour: {r: 0.37429473, g: 1, b: 0.28930813, a: 0}
+  jumpBuffColour: {r: 0.19496846, g: 0.9267745, b: 1, a: 0}
+  dashBuffColour: {r: 0.9622642, g: 0.6082527, b: 0.21484506, a: 0}
 --- !u!114 &1538979090
 MonoBehaviour:
   m_ObjectHideFlags: 0
