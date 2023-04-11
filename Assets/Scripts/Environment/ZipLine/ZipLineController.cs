@@ -12,6 +12,7 @@ namespace Environment.ZipLine
         [SerializeField] private float timeToTake;
     
         private ZipLineChild[] _zipLineChildren;
+        private LineRenderer _zipLineRenderer;
         private Vector3 _startPoint;
         private Vector3 _endPoint;
         private GameObject _player;
@@ -22,15 +23,18 @@ namespace Environment.ZipLine
         {
             _player = GameObject.FindGameObjectWithTag("Player");
             _zipLineChildren = GetComponentsInChildren<ZipLineChild>();
+            _zipLineRenderer = GetComponent<LineRenderer>();
             foreach (var childObj in _zipLineChildren)
             {
                 switch (childObj.IsStart)
                 {
                     case true when !childObj.IsEnd:
                         _startPoint = childObj.gameObject.transform.position;
+                        _zipLineRenderer.SetPosition(0, childObj.ZipLineDraw.position);
                         break;
                     case false when childObj.IsEnd:
                         _endPoint = childObj.gameObject.transform.position;
+                        _zipLineRenderer.SetPosition(_zipLineRenderer.positionCount-1, childObj.ZipLineDraw.position);
                         break;
                     case true when childObj.IsEnd:
                         Debug.LogError("This has glitched");

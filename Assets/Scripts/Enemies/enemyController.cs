@@ -45,18 +45,26 @@ namespace Enemies
         [SerializeField] private AttackType attackType;
         [SerializeField] private GameObject magicWeaponProj;
 
+        
+
         [Header("Enemy AI Config")] [SerializeField]
         private int playerDetectionRadius;
 
 
         private float _currentHealth;
+        private bool _canMove;
         private NavMeshAgent _navMeshAgent;
         private GameObject _player;
         private GameObject _enemyProjSpawnPos;
         private GameObject _spawnedProjectile;
         private PlayerHealth _playerHealth;
         private MagicProjectile _magicProjectile;
+        private Animator _enemyAnimator;
         private bool _isLookingAtPlayer;
+        private Vector3 _previousPos;
+        private float _velocity;
+        private float _attackAnimLength;
+        private AnimationClip[] animClips;
 
         private bool _canAttack;
 
@@ -69,13 +77,34 @@ namespace Enemies
             _player = GameObject.FindGameObjectWithTag("Player");
             _playerHealth = _player.GetComponent<PlayerHealth>();
             _enemyProjSpawnPos = gameObject.FindGameObjectInChildWithTag("enemyProjSpawn");
+            _enemyAnimator = GetComponent<Animator>();
+
+            animClips = _enemyAnimator.runtimeAnimatorController.animationClips;
+            foreach (var animClip in animClips)
+            {
+                if (animClip.name == "HeavyHit")
+                {
+                    _attackAnimLength = animClip.length;
+                }
+            }
+            
+            _enemyAnimator.Play("HeavyIdle");
         }
 
         private void FixedUpdate()
         {
-            if (Vector3.Distance(transform.position, _player.transform.position) < playerDetectionRadius)
+            if (Vector3.Distance(transform.position, _player.transform.position) < playerDetectionRadius && _canMove)
                 _navMeshAgent.SetDestination(_player.transform.position);
 
+            switch (_velocity)
+            {
+                case > 0.01f when _canMove:
+                    _enemyAnimator.Play("HeavyRun");
+                    break;
+                case < 0.01f when _canMove:
+                    _enemyAnimator.Play("HeavyIdle");
+                    break;
+            }
 
             switch (attackType)
             {
@@ -96,6 +125,12 @@ namespace Enemies
             }
         }
 
+        private void LateUpdate()
+        {
+            _velocity = (transform.position - _previousPos).magnitude / Time.deltaTime;
+            _previousPos = transform.position;
+        }
+
 
         public void TakeDamage(float damageAmount)
         {
@@ -111,6 +146,8 @@ namespace Enemies
         private void AttackPlayerMelee()
         {
             if (!_canAttack) return;
+            _canMove = false;
+            _enemyAnimator.Play("HeavyHit");
             _playerHealth.Damage(meleeDamage);
             StartCoroutine(AttackCooldown(meleeAttackCooldown));
         }
@@ -131,6 +168,7 @@ namespace Enemies
             _canAttack = false;
             yield return new WaitForSeconds(cooldownTime);
             _canAttack = true;
+            _canMove = true;
         }
 
         private bool CheckIfLookingAtPlayer()

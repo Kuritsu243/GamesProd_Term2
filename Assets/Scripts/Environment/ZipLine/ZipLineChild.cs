@@ -8,11 +8,18 @@ namespace Environment.ZipLine
     {
         [SerializeField] private bool isStart;
         [SerializeField] private bool isEnd;
+        [SerializeField] private Transform zipLineDraw;
         
         public bool IsStart
         {
             get => isStart;
             set => isStart = value;
+        }
+
+        public Transform ZipLineDraw
+        {
+            get => zipLineDraw;
+            set => zipLineDraw = value;
         }
 
         public bool IsEnd
