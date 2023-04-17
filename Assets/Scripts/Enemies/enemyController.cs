@@ -27,7 +27,16 @@ namespace Enemies
             Ranged
         }
 
+        private enum EnemyType
+        {
+            Heavy,
+            Tall,
+            TVHead
+        }
 
+        [Header("Enemy Types")] [SerializeField]
+        private EnemyType enemyType;
+        
         [Header("Enemy Health")] [SerializeField]
         private float maxHealth;
 
@@ -80,15 +89,25 @@ namespace Enemies
             _enemyAnimator = GetComponent<Animator>();
 
             animClips = _enemyAnimator.runtimeAnimatorController.animationClips;
-            foreach (var animClip in animClips)
+
+            switch (enemyType)
             {
-                if (animClip.name == "HeavyHit")
-                {
-                    _attackAnimLength = animClip.length;
-                }
+                case EnemyType.Heavy:
+                    foreach (var animClip in animClips)
+                        if (animClip.name == "HeavyHit")
+                            _attackAnimLength = animClip.length;
+                    _enemyAnimator.Play("HeavyIdle");
+                    break;
+                case EnemyType.Tall:
+                    _enemyAnimator.Play("Tall_Idle");
+                    break;
+                case EnemyType.TVHead:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
             
-            _enemyAnimator.Play("HeavyIdle");
+
         }
 
         private void FixedUpdate()
@@ -98,11 +117,14 @@ namespace Enemies
 
             switch (_velocity)
             {
-                case > 0.01f when _canMove:
+                case > 0.01f when _canMove && enemyType == EnemyType.Heavy:
                     _enemyAnimator.Play("HeavyRun");
                     break;
-                case < 0.01f when _canMove:
+                case < 0.01f when _canMove && enemyType == EnemyType.Heavy:
                     _enemyAnimator.Play("HeavyIdle");
+                    break;
+                case < 0.01f when _canMove && enemyType == EnemyType.Tall:
+                    _enemyAnimator.Play("Tall_Idle");
                     break;
             }
 
