@@ -787,6 +787,7 @@ MonoBehaviour:
   meleeAttackCooldown: 3
   attackType: 0
   magicWeaponProj: {fileID: 4747104764687647088, guid: af7b244ba57f0e840b4ffd5d3c0d7a74, type: 3}
+  enemyProjSpawnPos: {fileID: 0}
   playerDetectionRadius: 5
 --- !u!1 &705206595
 GameObject:
@@ -4316,6 +4317,14 @@ PrefabInstance:
       propertyPath: volumeLayer.m_Bits
       value: 256
       objectReference: {fileID: 0}
+    - target: {fileID: 1481566254280396609, guid: f1bf934f8b6f29a479cc60066e5cd976, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.631
+      objectReference: {fileID: 0}
+    - target: {fileID: 1481566254280396609, guid: f1bf934f8b6f29a479cc60066e5cd976, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.69
+      objectReference: {fileID: 0}
     - target: {fileID: 2150084661612539130, guid: f1bf934f8b6f29a479cc60066e5cd976, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -4362,7 +4371,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4802610994997844074, guid: f1bf934f8b6f29a479cc60066e5cd976, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.806
+      value: 0.809
       objectReference: {fileID: 0}
     - target: {fileID: 4802610994997844074, guid: f1bf934f8b6f29a479cc60066e5cd976, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4475,6 +4484,10 @@ PrefabInstance:
     - target: {fileID: 8006469122422544640, guid: f1bf934f8b6f29a479cc60066e5cd976, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8006469122422544642, guid: f1bf934f8b6f29a479cc60066e5cd976, type: 3}
+      propertyPath: far clip plane
+      value: 302.29
       objectReference: {fileID: 0}
     - target: {fileID: 8006469122422544644, guid: f1bf934f8b6f29a479cc60066e5cd976, type: 3}
       propertyPath: m_RenderPostProcessing

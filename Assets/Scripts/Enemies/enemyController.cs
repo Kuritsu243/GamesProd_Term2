@@ -53,8 +53,8 @@ namespace Enemies
         [SerializeField] private int meleeAttackCooldown;
         [SerializeField] private AttackType attackType;
         [SerializeField] private GameObject magicWeaponProj;
+        [SerializeField] private GameObject enemyProjSpawnPos;
 
-        
 
         [Header("Enemy AI Config")] [SerializeField]
         private int playerDetectionRadius;
@@ -64,7 +64,7 @@ namespace Enemies
         private bool _canMove;
         private NavMeshAgent _navMeshAgent;
         private GameObject _player;
-        private GameObject _enemyProjSpawnPos;
+
         private GameObject _spawnedProjectile;
         private PlayerHealth _playerHealth;
         private MagicProjectile _magicProjectile;
@@ -85,7 +85,7 @@ namespace Enemies
             _navMeshAgent = GetComponent<NavMeshAgent>();
             _player = GameObject.FindGameObjectWithTag("Player");
             _playerHealth = _player.GetComponent<PlayerHealth>();
-            _enemyProjSpawnPos = gameObject.FindGameObjectInChildWithTag("enemyProjSpawn");
+            enemyProjSpawnPos = gameObject.FindGameObjectInChildWithTag("enemyProjSpawn");
             _enemyAnimator = GetComponent<Animator>();
 
             animClips = _enemyAnimator.runtimeAnimatorController.animationClips;
@@ -178,7 +178,7 @@ namespace Enemies
         {
             if (!_canAttack) return;
             _spawnedProjectile =
-                Instantiate(magicWeaponProj, _enemyProjSpawnPos.transform.position, transform.rotation);
+                Instantiate(magicWeaponProj, enemyProjSpawnPos.transform.position, transform.rotation);
             _magicProjectile = _spawnedProjectile.GetComponent<MagicProjectile>();
             _magicProjectile.Initialize(rangedAttackDamage, rangedAttackProjectileSpeed,
                 rangedAttackProjectileDespawnTime, true);

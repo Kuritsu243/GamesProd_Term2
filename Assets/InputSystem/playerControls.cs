@@ -292,6 +292,17 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""action"": ""playerActiveBuff"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f5739132-2658-4aad-94cf-23daae926263"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KB+M"",
+                    ""action"": ""playerActiveBuff"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
