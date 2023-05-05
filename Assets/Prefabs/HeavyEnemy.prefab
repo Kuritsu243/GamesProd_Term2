@@ -362,6 +362,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6300235345568829219}
   - component: {fileID: 4889210728616904211}
+  - component: {fileID: 7563628538751294178}
   m_Layer: 0
   m_Name: BigEnemy
   m_TagString: Untagged
@@ -464,6 +465,20 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.06502843, y: 0.21555424, z: 0.37873808}
     m_Extent: {x: 1.4829288, y: 2.0387442, z: 1.1195544}
   m_DirtyAABB: 0
+--- !u!64 &7563628538751294178
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4521346982405573599}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 2565315106183200869, guid: 2af55fdc8dde5c74cb5923326efbf0f4, type: 3}
 --- !u!1 &4648764847558548759
 GameObject:
   m_ObjectHideFlags: 0
