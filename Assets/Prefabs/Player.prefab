@@ -2059,6 +2059,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  deathScreen:
+    m_SceneName: DeathScreen
 --- !u!114 &4921632355607551913
 MonoBehaviour:
   m_ObjectHideFlags: 0

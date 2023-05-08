@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 namespace Player.Health
 {
     public class PlayerHealth : MonoBehaviour
@@ -7,6 +7,8 @@ namespace Player.Health
         [Header("Health Settings")] 
         [SerializeField] private float maxHealth;
 
+        [SerializeField] private SceneObject deathScreen;
+        
         public float CurrentHealth { get; set; }
 
         // Start is called before the first frame update
@@ -23,7 +25,8 @@ namespace Player.Health
 
         private void Die()
         {
-            Debug.Log("player died");
+            Cursor.lockState = CursorLockMode.None;
+            SceneManager.LoadScene(deathScreen);
         }
 
         public void Damage(float damageAmount)
