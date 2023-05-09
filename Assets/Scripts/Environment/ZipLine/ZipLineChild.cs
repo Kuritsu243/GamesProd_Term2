@@ -31,7 +31,7 @@ namespace Environment.ZipLine
         private void Start()
         {
             if (!isEnd) return;
-            GetComponent<Collider>().enabled = false;
+            GetComponentInChildren<Collider>().enabled = false;
             
         }
     }

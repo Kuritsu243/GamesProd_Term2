@@ -38,6 +38,7 @@ namespace Player.Shooting
         [SerializeField] private int rocketProjectileSpeed;
         [SerializeField] private int rocketDespawnTime;
         [SerializeField] private int rocketExplosionRadius;
+        [SerializeField] private Animator rocketAnimator;
         [Header("Shotgun Specific Settings")] 
         [SerializeField] private GameObject pelletProjectile;
         [SerializeField] private int shotgunPelletCount;
@@ -45,6 +46,7 @@ namespace Player.Shooting
         [SerializeField] private int shotgunSpreadSizeInt;
         [SerializeField] private int shotgunPelletSpeed;
         [SerializeField] private int shotgunPelletDespawnTime;
+        [SerializeField] private Animator shotgunAnimator;
         [Header("Raycast Settings")] 
         [SerializeField] private LayerMask layerMask;
         [SerializeField] private int maxInteractDistance;
@@ -82,7 +84,9 @@ namespace Player.Shooting
         private bool _traceAtRightDualWield;
         private bool _canFire;
         private float buffRemaining;
-
+        private AnimationClip[] _shotgunAnimClips;
+        private AnimationClip[] _rocketAnimClips;
+        
         // Start is called before the first frame update
         private void Start()
         {
@@ -91,11 +95,25 @@ namespace Player.Shooting
             _playerCamera = GetComponentInChildren<Camera>();
             _projectileSpawnPoint = GameObject.FindGameObjectWithTag("projSpawnPoint");
             CurrentAmmo = 50;
+
+            _shotgunAnimClips = shotgunAnimator.runtimeAnimatorController.animationClips;
+            _rocketAnimClips = rocketAnimator.runtimeAnimatorController.animationClips;
+
+            foreach (var shotgunAnimClip in _shotgunAnimClips)
+                if (shotgunAnimClip.name == "ShotgunShootAnim")
+                    shotgunCooldown = shotgunAnimClip.length - shotgunAnimClip.length / 6;
+            
+            foreach (var rocketAnimClip in _rocketAnimClips)
+                if (rocketAnimClip.name == "RocketShootAnim")
+                    rocketCooldown = rocketAnimClip.length - rocketAnimClip.length / 5;
+
+            _canFire = true;
         }
 
         // Update is called once per frame
         public void Fire()
         {
+            if (!_canFire) return;
             if (CurrentAmmo <= 0) return;
             if (_playerInventory.CurrentCards.Count < 1) return;
             switch (_playerInventory.IsInWeaponMode)
@@ -183,6 +201,8 @@ namespace Player.Shooting
                 // pelletRigidbody.velocity = shotgunSpawnPos.transform.forward * shotgunPelletSpeed;
             }
             
+            shotgunAnimator.Play("ShotgunShootAnim");
+            StartCoroutine(WeaponFiringCooldown(shotgunCooldown));
             CurrentAmmo--;
             if (CurrentAmmo > 0) return;
             _playerInventory.ExpireWeapon(_playerInventory.CurrentCard);
@@ -213,6 +233,9 @@ namespace Player.Shooting
             else
                 rocketScript.Initialize(rocketDamage, rocketProjectileSpeed, rocketDespawnTime, rocketExplosionRadius); // passthrough values
             rocketRigidbody.AddForce(direction.normalized * rocketProjectileSpeed, ForceMode.Impulse); // add the force
+            
+            rocketAnimator.Play("RocketShootAnim");
+            StartCoroutine(WeaponFiringCooldown(rocketCooldown));
             CurrentAmmo--; // deplete ammo
             if (CurrentAmmo > 0) return; // if less than 0 ammo
             _playerInventory.ExpireWeapon(_playerInventory.CurrentCard); // expire card
