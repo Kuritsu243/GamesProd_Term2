@@ -62,6 +62,10 @@ namespace Player.Shooting
         [SerializeField] private GameObject shotgunSpawnPos;
         [SerializeField] private GameObject pistolSpawnPos;
         [SerializeField] private GameObject magicSpawnPos;
+        [SerializeField] private float trailSpeed;
+        [SerializeField] private Vector3 trailSpreadVariance;
+        
+        
         [Header("Firing Cooldown Lengths")] 
         [SerializeField] private float dualWieldCooldown;
         [SerializeField] private float pistolCooldown;
@@ -141,22 +145,39 @@ namespace Player.Shooting
             }
         }
 
+        // src: https://github.com/llamacademy/raycast-bullet-trails/blob/main/Assets/Scripts/Gun.cs
         private void DualWieldFire()
         {
-            var rayOrigin = _playerCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
-            if (!Physics.Raycast(rayOrigin, out var hit, maxInteractDistance)) return;
-            TrailRenderer trail = Instantiate(bulletTrail, AlternativeDualWieldTrails(), Quaternion.identity);
-            StartCoroutine(SpawnTrail(trail, hit));
-            switch (hit.transform.tag)
+            // var rayOrigin = _playerCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
+            // if (!Physics.Raycast(rayOrigin, out var hit, maxInteractDistance)) return;
+            // TrailRenderer trail = Instantiate(bulletTrail, AlternativeDualWieldTrails(), Quaternion.identity);
+            // StartCoroutine(SpawnTrail(trail, hit));
+            var spawnPos = AlternativeDualWieldTrails();
+            var direction = GetTrailSpread(spawnPos);
+
+            if (Physics.Raycast(spawnPos.position, direction, out RaycastHit hit, 25f))
             {
-                case "Enemy":
-                    var collidedEnemy = hit.transform.gameObject;
-                    if (_playerBuff.IsDamageBuffActive)
-                        collidedEnemy.GetComponent<EnemyController>().TakeDamage(CalculateBuffedDamage(dualWieldDamage));
-                    else
-                        collidedEnemy.GetComponent<EnemyController>().TakeDamage(dualWieldDamage);
-                    break;
+                var trail = Instantiate(bulletTrail, spawnPos.position, Quaternion.identity);
+                StartCoroutine(SpawnTrail(trail, hit.point, hit.normal, true));
+                
+                switch (hit.transform.tag)
+                {
+                    case "Enemy":
+                        var collidedEnemy = hit.transform.gameObject;
+                        if (_playerBuff.IsDamageBuffActive)
+                            collidedEnemy.GetComponent<EnemyController>().TakeDamage(CalculateBuffedDamage(dualWieldDamage));
+                        else
+                            collidedEnemy.GetComponent<EnemyController>().TakeDamage(dualWieldDamage);
+                        break;
+                }
             }
+            else
+            {
+                var trail = Instantiate(bulletTrail, spawnPos.position, Quaternion.identity);
+                StartCoroutine(SpawnTrail(trail, spawnPos.position + direction * 25, Vector3.zero, false));
+            }
+            
+
 
             StartCoroutine(WeaponFiringCooldown(dualWieldCooldown));
             CurrentAmmo--;
@@ -169,7 +190,7 @@ namespace Player.Shooting
             var rayOrigin = _playerCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
             if (!Physics.Raycast(rayOrigin, out var hit, maxInteractDistance)) return;
             TrailRenderer trail = Instantiate(bulletTrail, pistolSpawnPos.transform.position, Quaternion.identity);
-            StartCoroutine(SpawnTrail(trail, hit));
+            // StartCoroutine(SpawnTrail(trail, hit));
             switch (hit.transform.tag)
             {
                 case "Enemy":
@@ -257,20 +278,37 @@ namespace Player.Shooting
             _playerInventory.ExpireWeapon(_playerInventory.CurrentCard);
         }
 
-        private static IEnumerator SpawnTrail(TrailRenderer trail, RaycastHit hit)
+        private IEnumerator SpawnTrail(TrailRenderer trail, Vector3 point, Vector3 pointNormal, bool madeImpact)
         {
-            float time = 0;
             var startPos = trail.transform.position;
+            var distance = Vector3.Distance(trail.transform.position, point);
+            var remainingDistance = distance;
+            Debug.Log(startPos);
+            Debug.Log(distance);
+            
 
-            while (time < 1)
+            while (remainingDistance > 0)
             {
-                trail.transform.position = Vector3.Lerp(startPos, hit.point, time);
-                time += Time.deltaTime / trail.time;
+                trail.transform.position = Vector3.Lerp(startPos, point, 1 - (remainingDistance / distance));
+                remainingDistance -= trailSpeed * Time.deltaTime;
                 yield return null;
             }
 
-            trail.transform.position = hit.point;
+            trail.transform.position = point;
             Destroy(trail.gameObject, trail.time);
+
+            // float time = 0;
+            // var startPos = trail.transform.position;
+            //
+            // while (time < 1)
+            // {
+            //     trail.transform.position = Vector3.Lerp(startPos, hit.point, time);
+            //     time += Time.deltaTime / trail.time;
+            //     yield return null;
+            // }
+            //
+            // trail.transform.position = hit.point;
+            // Destroy(trail.gameObject, trail.time);
         }
 
         private static IEnumerator SpawnTrailAlternative(TrailRenderer trail, Vector3 hit, GameObject objToDestroy)
@@ -289,20 +327,20 @@ namespace Player.Shooting
             Destroy(objToDestroy);
         }
 
-        private Vector3 AlternativeDualWieldTrails()
+        private Transform AlternativeDualWieldTrails()
         {
-            var posToReturn = Vector3.zero;
+            Transform posToReturn = null;
             switch (_traceAtLeftDualWield)
             {
                 case true when !_traceAtRightDualWield:
                     _traceAtLeftDualWield = false;
                     _traceAtRightDualWield = true;
-                    posToReturn = leftDualWieldSpawnPos.transform.position;
+                    posToReturn = leftDualWieldSpawnPos.transform;
                     break;
                 case false when _traceAtRightDualWield:
                     _traceAtLeftDualWield = true;
                     _traceAtRightDualWield = false;
-                    posToReturn = rightDualWieldSpawnPos.transform.position;
+                    posToReturn = rightDualWieldSpawnPos.transform;
                     break;
             }
             return posToReturn;
@@ -315,7 +353,18 @@ namespace Player.Shooting
             _canFire = true;
         }
 
+        private Vector3 GetTrailSpread(Transform weaponSpawnPos)
+        {
+            Vector3 direction = weaponSpawnPos.forward;
 
+            direction += new Vector3(
+                Random.Range(-trailSpreadVariance.x, trailSpreadVariance.x),
+                Random.Range(-trailSpreadVariance.y, trailSpreadVariance.y),
+                Random.Range(-trailSpreadVariance.z, trailSpreadVariance.z)
+            );
+
+            return direction;
+        }
 
         private float CalculateBuffedDamage(int originalDamageAmount)
         {
