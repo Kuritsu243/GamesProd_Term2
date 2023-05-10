@@ -11,7 +11,7 @@ namespace Projectiles
         private int _projectileDespawnRate;
         private Rigidbody _projectileRigidbody;
         private int _projectileSpeed;
-        private bool _enemyProjectile;
+        [SerializeField] private bool _enemyProjectile;
 
         private void Start()
         {
@@ -20,10 +20,30 @@ namespace Projectiles
             StartCoroutine(ProjectileLifeCounter());
         }
 
-        private void OnCollisionEnter(Collision collision)
+        //private void OnCollisionEnter(Collision collision)
+        //{
+        //    Debug.Log(collision.gameObject);
+        //    var collidedObject = collision.transform.root.gameObject;
+        //    switch (collidedObject.tag)
+        //    {
+        //        case "Enemy" when !_enemyProjectile:
+        //            var enemyScript = collidedObject.GetComponent<EnemyController>();
+        //            enemyScript.TakeDamage(_projectileDamage);
+        //            Despawn();
+        //            break;
+        //        case "Player" when _enemyProjectile:
+        //            var playerHealth = collidedObject.GetComponentInChildren<PlayerHealth>();
+        //            playerHealth.Damage(_projectileDamage);
+        //            Despawn();
+        //            break;
+                
+        //    }
+        //}
+
+        private void OnTriggerEnter(Collider other)
         {
-            Debug.Log(collision.gameObject);
-            var collidedObject = collision.transform.root.gameObject;
+            Debug.Log(other.gameObject);
+            var collidedObject = other.transform.root.gameObject;
             switch (collidedObject.tag)
             {
                 case "Enemy" when !_enemyProjectile:
@@ -36,7 +56,7 @@ namespace Projectiles
                     playerHealth.Damage(_projectileDamage);
                     Despawn();
                     break;
-                
+
             }
         }
 

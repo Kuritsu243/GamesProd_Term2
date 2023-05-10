@@ -23,6 +23,8 @@ namespace UI
         private GameObject _cardSprite;
         private GameObject _buffDurationUI;
         private Image _buffDurationForeground;
+        private Image _healthBarForeground;
+        private Image _cardImage;
         private TextMeshProUGUI _activeItemText;
         private TextMeshProUGUI _activeItemNoText;
         private TextMeshProUGUI _activeItemMode;
@@ -45,7 +47,7 @@ namespace UI
             _playerShooting = _player.GetComponent<PlayerShooting>();
             _playerHealth = _player.GetComponent<PlayerHealth>();
             _playerBuff = _player.GetComponent<PlayerBuff>();
-            _currentHealthText = GameObject.FindGameObjectWithTag("currentHealth").GetComponent<TextMeshProUGUI>();
+            _healthBarForeground = GameObject.FindGameObjectWithTag("currentHealth").GetComponent<Image>();
             _playerInventory = _player.GetComponent<PlayerInventory>();
             _playerActiveItem = _player.GetComponent<PlayerActiveItem>();
             _inventoryUI = GameObject.FindGameObjectWithTag("inventoryUI");
@@ -59,6 +61,7 @@ namespace UI
             _cardSprite = GameObject.FindGameObjectWithTag("cardSprite");
             _buffDurationUI = GameObject.FindGameObjectWithTag("buffDurationUI");
             _buffDurationForeground = _buffDurationUI.GetComponentInChildren<Image>();
+            _cardImage = _cardSprite.GetComponent<Image>();
             
             _cardInfoUI.SetActive(false);
             _buffDurationUI.SetActive(false);
@@ -71,7 +74,7 @@ namespace UI
 
         private void FixedUpdate()
         {
-            _currentHealthText.text = _playerHealth.CurrentHealth.ToString();
+            _healthBarForeground.fillAmount = _playerHealth.CurrentHealth / _playerHealth.MaxHealth;
             if (_playerInventory.CurrentCards.Count < 1) return;
             _activeItemText.text = _playerInventory.CurrentCard.name;
             _activeItemNoText.text = _playerInventory.ActiveItemIndex.ToString();
@@ -149,6 +152,11 @@ namespace UI
             }
             _currentlyRotating = false;
 
+        }
+
+        public void SetCardSprite(cardObject card)
+        {
+            _cardImage.sprite = card.cardSprite;
         }
 
         public void ShowNewCardUI(cardObject newCard)

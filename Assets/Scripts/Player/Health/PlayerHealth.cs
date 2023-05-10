@@ -10,6 +10,8 @@ namespace Player.Health
         [SerializeField] private SceneObject deathScreen;
         
         public float CurrentHealth { get; set; }
+        
+        public float MaxHealth => maxHealth;
 
         // Start is called before the first frame update
         private void Start()

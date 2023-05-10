@@ -16,7 +16,7 @@ MonoBehaviour:
   cardMesh: {fileID: 0}
   cardMaterials:
   - {fileID: 2100000, guid: 41f47151981080b45a546dbdebda5581, type: 2}
-  cardSprite: {fileID: 21300000, guid: aad05c085ae286c4197c7972d4a16931, type: 3}
+  cardSprite: {fileID: 21300000, guid: 9083e405fa846c74d9f4f397061c410d, type: 3}
   cardInfo: description test
   crosshairSprite: {fileID: 0}
   weaponDamage: 0

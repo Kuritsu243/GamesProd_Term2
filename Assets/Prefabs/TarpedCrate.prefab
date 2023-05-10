@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1729951052743654620}
   - component: {fileID: 3435647025752191865}
   - component: {fileID: 597054114215937971}
+  - component: {fileID: 4036306623141474887}
   m_Layer: 0
   m_Name: TarpedCrate
   m_TagString: Untagged
@@ -83,3 +84,17 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &4036306623141474887
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1389877244824479334}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 8714274057448991888, guid: 4953a325d19b1ca41bbc4761a60855d4, type: 3}

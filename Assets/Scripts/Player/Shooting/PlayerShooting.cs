@@ -33,6 +33,8 @@ namespace Player.Shooting
         [SerializeField] private GameObject magicProjectile;
         [SerializeField] private int magicProjectileSpeed;
         [SerializeField] private int magicDespawnTime;
+
+        
         [Header("Rocket Specific Settings")]
         [SerializeField] private GameObject rocketProjectile;
         [SerializeField] private int rocketProjectileSpeed;
@@ -59,6 +61,7 @@ namespace Player.Shooting
         [SerializeField] private GameObject rocketSpawnPos;
         [SerializeField] private GameObject shotgunSpawnPos;
         [SerializeField] private GameObject pistolSpawnPos;
+        [SerializeField] private GameObject magicSpawnPos;
         [Header("Firing Cooldown Lengths")] 
         [SerializeField] private float dualWieldCooldown;
         [SerializeField] private float pistolCooldown;
@@ -245,7 +248,7 @@ namespace Player.Shooting
         private void MagicFire()
         {
             _spawnedProjectile =
-                Instantiate(magicProjectile, _projectileSpawnPoint.transform.position, transform.rotation);
+                Instantiate(magicProjectile, magicSpawnPos.transform.position, transform.rotation);
             _magicProjectile = _spawnedProjectile.GetComponent<MagicProjectile>();
             _magicProjectile.Initialize(magicDamage, magicProjectileSpeed, magicDespawnTime, false);
             StartCoroutine(WeaponFiringCooldown(magicCooldown));

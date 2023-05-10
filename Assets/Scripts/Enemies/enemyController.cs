@@ -50,7 +50,7 @@ namespace Enemies
         [SerializeField] private int rangedAttackProjectileDespawnTime;
         [SerializeField] private int rangedAttackCooldown;
         [SerializeField] private float pauseTimeBeforeShoot;
-        [SerializeField] private int meleeAttackCooldown;
+        [SerializeField] private float meleeAttackCooldown;
         [SerializeField] private AttackType attackType;
         [SerializeField] private GameObject magicWeaponProj;
         [SerializeField] private GameObject enemyProjSpawnPos;
@@ -106,7 +106,8 @@ namespace Enemies
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            
+
+            meleeAttackCooldown = _attackAnimLength - _attackAnimLength / 5;
 
         }
 
@@ -132,7 +133,7 @@ namespace Enemies
             {
                 case AttackType.Melee:
                     if (Vector3.Distance(transform.position, _player.transform.position) > meleeAttackRange) return;
-                    AttackPlayerMelee();
+                    StartCoroutine(AttackPlayerMelee());
                     break;
                 case AttackType.Ranged:
                     if (Vector3.Distance(transform.position, _player.transform.position) > rangedRange) return;
@@ -145,6 +146,8 @@ namespace Enemies
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+            
+            Debug.Log(Vector3.Distance(transform.position, _player.transform.position));
         }
 
         private void LateUpdate()
@@ -165,13 +168,16 @@ namespace Enemies
             Destroy(gameObject);
         }
 
-        private void AttackPlayerMelee()
+        private IEnumerator AttackPlayerMelee()
         {
-            if (!_canAttack) return;
+            if (!_canAttack) yield break;
             _canMove = false;
             _enemyAnimator.Play("HeavyHit");
-            _playerHealth.Damage(meleeDamage);
             StartCoroutine(AttackCooldown(meleeAttackCooldown));
+            yield return new WaitForSeconds(_attackAnimLength);
+            if (Vector3.Distance(transform.position, _player.transform.position) < meleeAttackRange)
+                _playerHealth.Damage(meleeDamage);
+
         }
 
         private void AttackPlayerRanged()
@@ -185,7 +191,7 @@ namespace Enemies
             StartCoroutine(AttackCooldown(rangedAttackCooldown));
         }
 
-        private IEnumerator AttackCooldown(int cooldownTime)
+        private IEnumerator AttackCooldown(float cooldownTime)
         {
             _canAttack = false;
             yield return new WaitForSeconds(cooldownTime);

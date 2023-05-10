@@ -98,7 +98,10 @@ namespace Player.Inventory
             CurrentCard = _currentCards[cardIndex];
             ActiveItemIndex = cardIndex;
             _playerActiveItem.ChangeActiveModel(CurrentCard);
+            _canvasScript.SetCardSprite(CurrentCard);
         }
+
+
 
         public void ChangeActiveCardMode()
         {
