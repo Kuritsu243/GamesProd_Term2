@@ -42,6 +42,7 @@ GameObject:
   - component: {fileID: 6719426493184010473}
   - component: {fileID: 7705634077971048268}
   - component: {fileID: 5551564053161907078}
+  - component: {fileID: 6164580318862761411}
   m_Layer: 7
   m_Name: Wand
   m_TagString: Untagged
@@ -63,7 +64,7 @@ Transform:
   m_Children:
   - {fileID: 805990396866967085}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!33 &7705634077971048268
 MeshFilter:
@@ -115,3 +116,23 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!95 &6164580318862761411
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6200298248278946387}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9b5293c9fa2f4be418f3baabd91dbccc, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
