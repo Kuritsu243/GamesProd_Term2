@@ -983,6 +983,8 @@ MonoBehaviour:
   shotgunPelletSpeed: 40
   shotgunPelletDespawnTime: 5
   shotgunAnimator: {fileID: 0}
+  dualLAnimator: {fileID: 0}
+  dualRAnimator: {fileID: 0}
   layerMask:
     serializedVersion: 2
     m_Bits: 0
@@ -1314,7 +1316,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2303637868873939321, guid: 52beee92ee15f35428aef119f79df8bd, type: 3}
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 52beee92ee15f35428aef119f79df8bd, type: 3}
 --- !u!1 &3875738849052826808 stripped

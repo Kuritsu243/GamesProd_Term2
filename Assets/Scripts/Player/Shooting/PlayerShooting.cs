@@ -49,6 +49,9 @@ namespace Player.Shooting
         [SerializeField] private int shotgunPelletSpeed;
         [SerializeField] private int shotgunPelletDespawnTime;
         [SerializeField] private Animator shotgunAnimator;
+        [Header("Dual Wield Specific Settings")] 
+        [SerializeField] private Animator dualLAnimator;
+        [SerializeField] private Animator dualRAnimator;
         [Header("Raycast Settings")] 
         [SerializeField] private LayerMask layerMask;
         [SerializeField] private int maxInteractDistance;
@@ -64,8 +67,6 @@ namespace Player.Shooting
         [SerializeField] private GameObject magicSpawnPos;
         [SerializeField] private float trailSpeed;
         [SerializeField] private Vector3 trailSpreadVariance;
-        
-        
         [Header("Firing Cooldown Lengths")] 
         [SerializeField] private float dualWieldCooldown;
         [SerializeField] private float pistolCooldown;
@@ -78,7 +79,7 @@ namespace Player.Shooting
         public int CurrentAmmo { get; set; }
         public bool IsDamageBuffActive { get; set; }
         public bool IsJumpBuffActive { get; set; }
-   
+        
         private PlayerInventory _playerInventory;
         private PlayerBuff _playerBuff;
         private Camera _playerCamera;
@@ -93,6 +94,10 @@ namespace Player.Shooting
         private float buffRemaining;
         private AnimationClip[] _shotgunAnimClips;
         private AnimationClip[] _rocketAnimClips;
+        private AnimationClip[] _dualLAnimClips;
+        private AnimationClip[] _dualRAnimClips;
+        private AnimationClip _leftAnimClip;
+        private AnimationClip _rightAnimClip;
         
         // Start is called before the first frame update
         private void Start()
@@ -105,6 +110,8 @@ namespace Player.Shooting
 
             _shotgunAnimClips = shotgunAnimator.runtimeAnimatorController.animationClips;
             _rocketAnimClips = rocketAnimator.runtimeAnimatorController.animationClips;
+            _dualLAnimClips = dualLAnimator.runtimeAnimatorController.animationClips;
+            _dualRAnimClips = dualRAnimator.runtimeAnimatorController.animationClips;
 
             foreach (var shotgunAnimClip in _shotgunAnimClips)
                 if (shotgunAnimClip.name == "ShotgunShootAnim")
@@ -113,6 +120,19 @@ namespace Player.Shooting
             foreach (var rocketAnimClip in _rocketAnimClips)
                 if (rocketAnimClip.name == "RocketShootAnim")
                     rocketCooldown = rocketAnimClip.length - rocketAnimClip.length / 5;
+
+            foreach (var dualAnimClip in _dualLAnimClips)
+            {
+                if (dualAnimClip.name != "RevolverLAnim") continue;
+                dualWieldCooldown = dualAnimClip.length - dualAnimClip.length / 4;
+                _leftAnimClip = dualAnimClip;
+            }
+
+            foreach (var dualAnimClip in _dualRAnimClips)
+            {
+                if (dualAnimClip.name != "RevolverRAnim") continue;
+                _rightAnimClip = dualAnimClip;
+            }
 
             _canFire = true;
         }
@@ -152,6 +172,7 @@ namespace Player.Shooting
             // if (!Physics.Raycast(rayOrigin, out var hit, maxInteractDistance)) return;
             // TrailRenderer trail = Instantiate(bulletTrail, AlternativeDualWieldTrails(), Quaternion.identity);
             // StartCoroutine(SpawnTrail(trail, hit));
+            var animClipIndicator = _traceAtLeftDualWield;
             var spawnPos = AlternativeDualWieldTrails();
             var direction = GetTrailSpread(spawnPos);
 
@@ -176,9 +197,17 @@ namespace Player.Shooting
                 var trail = Instantiate(bulletTrail, spawnPos.position, Quaternion.identity);
                 StartCoroutine(SpawnTrail(trail, spawnPos.position + direction * 25, Vector3.zero, false));
             }
-            
 
 
+            switch (animClipIndicator)
+            {
+                case true:
+                    dualLAnimator.Play(_leftAnimClip.name);
+                    break;
+                case false:
+                    dualRAnimator.Play(_rightAnimClip.name);
+                    break;
+            }
             StartCoroutine(WeaponFiringCooldown(dualWieldCooldown));
             CurrentAmmo--;
             if (CurrentAmmo > 0) return;
@@ -344,6 +373,16 @@ namespace Player.Shooting
                     break;
             }
             return posToReturn;
+        }
+
+        private AnimationClip GetDualWieldClip()
+        {
+            AnimationClip clipToReturn = null;
+            return _traceAtLeftDualWield switch
+            {
+                true => _leftAnimClip,
+                false => _rightAnimClip
+            };
         }
 
         private IEnumerator WeaponFiringCooldown(float cooldownLength)
