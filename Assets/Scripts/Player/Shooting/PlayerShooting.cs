@@ -296,7 +296,7 @@ namespace Player.Shooting
 
             trail.transform.position = point;
             Destroy(trail.gameObject, trail.time);
-
+            // test
             // float time = 0;
             // var startPos = trail.transform.position;
             //

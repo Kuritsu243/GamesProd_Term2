@@ -51,8 +51,8 @@ namespace UI
             _playerInventory = _player.GetComponent<PlayerInventory>();
             _playerActiveItem = _player.GetComponent<PlayerActiveItem>();
             _inventoryUI = GameObject.FindGameObjectWithTag("inventoryUI");
-            _activeItemText = GameObject.FindGameObjectWithTag("activeItem").GetComponent<TextMeshProUGUI>();
-            _activeItemNoText = GameObject.FindGameObjectWithTag("activeItemSlot").GetComponent<TextMeshProUGUI>();
+            // _activeItemText = GameObject.FindGameObjectWithTag("activeItem").GetComponent<TextMeshProUGUI>();
+            // _activeItemNoText = GameObject.FindGameObjectWithTag("activeItemSlot").GetComponent<TextMeshProUGUI>();
             _activeItemMode = GameObject.FindGameObjectWithTag("activeItemMode").GetComponent<TextMeshProUGUI>();
             _cardInfoUI = GameObject.FindGameObjectWithTag("cardInfo");
             _cardInfoName = GameObject.FindGameObjectWithTag("newCardName").GetComponent<TextMeshProUGUI>();
@@ -76,8 +76,8 @@ namespace UI
         {
             _healthBarForeground.fillAmount = _playerHealth.CurrentHealth / _playerHealth.MaxHealth;
             if (_playerInventory.CurrentCards.Count < 1) return;
-            _activeItemText.text = _playerInventory.CurrentCard.name;
-            _activeItemNoText.text = _playerInventory.ActiveItemIndex.ToString();
+            // _activeItemText.text = _playerInventory.CurrentCard.name;
+            // _activeItemNoText.text = _playerInventory.ActiveItemIndex.ToString();
             _currentAmmoText.text = _playerShooting.CurrentAmmo.ToString();
             _activeItemMode.text = _playerInventory.IsInBuffMode switch
             {
