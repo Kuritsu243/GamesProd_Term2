@@ -7,6 +7,7 @@ namespace Projectiles
 {
     public class RocketProjectile : MonoBehaviour
     {
+        [SerializeField] private GameObject explosionEffect;
         private Rigidbody _rocketRigidbody;
         private Collider _rocketCollider;
         private float _rocketDamage;
@@ -46,6 +47,8 @@ namespace Projectiles
         {
             Destroy(gameObject);
             var position = transform.position;
+            var spawnedEffect = Instantiate(explosionEffect, position, Quaternion.identity);
+            Destroy(spawnedEffect, 1.5f);
             var hitColliders = new Collider[20];
             var size = Physics.OverlapSphereNonAlloc(position, _rocketSplashRadius, hitColliders);
             if (size < 1) return;

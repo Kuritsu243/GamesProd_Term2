@@ -275,7 +275,9 @@ namespace Player.Shooting
         private void RocketFire()
         {
             var rayOrigin = _playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f)); // get center of screen
-            var targetPoint = Physics.Raycast(rayOrigin, out var hit) ? hit.point : rayOrigin.GetPoint(75); // raycast
+            var targetPoint = Physics.Raycast(rayOrigin, out var hit) && !hit.transform.CompareTag("Player")
+                ? hit.point
+                : rocketSpawnPos.transform.position + rocketSpawnPos.transform.forward * 25; // raycast
             var direction = targetPoint - rocketSpawnPos.transform.position; // calc direction
             _spawnedProjectile = Instantiate(rocketProjectile, rocketSpawnPos.transform.position, Quaternion.identity); // spawn rocket
             _spawnedProjectile.transform.forward = direction.normalized; // set forward to the normalized direction
