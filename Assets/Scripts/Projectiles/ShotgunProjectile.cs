@@ -48,7 +48,7 @@ namespace Projectiles
                     Physics.IgnoreCollision(other, _pelletCollider);
                     break;
                 case "Enemy":
-                    var enemyScript = other.GetComponent<EnemyController>();
+                    var enemyScript = other.transform.root.GetComponentInChildren<EnemyController>();
                     enemyScript.TakeDamage(_pelletDamage);
                     Despawn();
                     break;
