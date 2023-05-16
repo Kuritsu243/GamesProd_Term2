@@ -14,6 +14,7 @@ namespace Player
         private Animator _playerAnimator;
         private float _velocity;
         private float _walkDuration;
+        private bool _playerMoving;
         
         // Start is called before the first frame update
         private void Start()
@@ -28,20 +29,28 @@ namespace Player
         {
             _inputSystem.HandleAllInputs();
 
-            switch (_velocity)
-            {
-                case > 0.1f:
-                    _playerAnimator.Play("demo_combat_run");
-                    break;
-                case < 0.1f:
-                    _playerAnimator.Play("demo_combat_idle");
-                    break;
-            }
         }
         private void LateUpdate()
         {
             _velocity = (transform.position - _previousPos).magnitude / Time.deltaTime;
             _previousPos = transform.position;
+            Debug.Log(_velocity);
+            
+            
+            
+            switch (_velocity)
+            {
+                case > -0.1f and < 1f when !_playerMoving:
+                    _playerAnimator.Play("demo_combat_idle");
+                    break;
+                case > 0.1f and < 1f when _playerMoving:
+                    _playerMoving = false;
+                    break;
+                case > 1f and < 100f when !_playerMoving:
+                    _playerAnimator.Play("demo_combat_run");
+                    _playerMoving = true;
+                    break;
+            }
         }
     }
 }

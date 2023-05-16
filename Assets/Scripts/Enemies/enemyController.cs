@@ -64,7 +64,7 @@ namespace Enemies
         private bool _canMove;
         private NavMeshAgent _navMeshAgent;
         private GameObject _player;
-
+        private HeavyEnemyHand _enemyHandScript;
         private GameObject _spawnedProjectile;
         private PlayerHealth _playerHealth;
         private MagicProjectile _magicProjectile;
@@ -93,6 +93,8 @@ namespace Enemies
             switch (enemyType)
             {
                 case EnemyType.Heavy:
+                    _enemyHandScript = GetComponentInChildren<HeavyEnemyHand>();
+                    _enemyHandScript.DamageAmount = meleeDamage;
                     foreach (var animClip in animClips)
                         if (animClip.name == "HeavyHit")
                             _attackAnimLength = animClip.length;
@@ -174,9 +176,11 @@ namespace Enemies
             _canMove = false;
             _enemyAnimator.Play("HeavyHit");
             StartCoroutine(AttackCooldown(meleeAttackCooldown));
+            yield return new WaitForSeconds(0.15f);
+            _enemyHandScript.CanHit = true;
             yield return new WaitForSeconds(_attackAnimLength);
-            if (Vector3.Distance(transform.position, _player.transform.position) < meleeAttackRange)
-                _playerHealth.Damage(meleeDamage);
+            _enemyHandScript.CanHit = false;
+
 
         }
 

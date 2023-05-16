@@ -82,7 +82,7 @@ namespace Player.Input
                     
                     break;
             }
-            Debug.Log(hit.transform.root.tag);
+            Debug.Log(hit.transform.root.gameObject);
         
         }
     
