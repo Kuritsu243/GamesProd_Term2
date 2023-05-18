@@ -150,7 +150,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 715297276875374768}
   m_LocalRotation: {x: -0, y: 0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.059, y: 2.031, z: 0.594}
+  m_LocalPosition: {x: -0.059, y: 2.031, z: 1.13}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -675,9 +675,11 @@ GameObject:
   - component: {fileID: 3616853040653836257}
   - component: {fileID: 3871721084018227212}
   - component: {fileID: 8959070472872264233}
+  - component: {fileID: 8433983711223732744}
+  - component: {fileID: 2228661234494648351}
   m_Layer: 0
   m_Name: TallEnemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -738,20 +740,59 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyType: 1
-  maxHealth: 0
+  maxHealth: 10
   meleeAttackRange: 0
   meleeDamage: 0
-  rangedAttackDamage: 0
-  rangedRange: 0
-  rangedAttackProjectileSpeed: 0
-  rangedAttackProjectileDespawnTime: 0
-  rangedAttackCooldown: 0
-  pauseTimeBeforeShoot: 0
+  rangedAttackDamage: 10
+  rangedRange: 8
+  rangedAttackProjectileSpeed: 15
+  rangedAttackProjectileDespawnTime: 5
+  rangedAttackCooldown: 2
+  pauseTimeBeforeShoot: 1
   meleeAttackCooldown: 0
   attackType: 0
-  magicWeaponProj: {fileID: 0}
+  magicWeaponProj: {fileID: 6928326012622607675, guid: 355ce85b659ed0f409e46287d441e9f7, type: 3}
   enemyProjSpawnPos: {fileID: 715297276875374768}
-  playerDetectionRadius: 0
+  tvHeadDebuffLength: 5
+  tvHeadDebuffCooldown: 8
+  tvHeadSound: {fileID: 0}
+  tallSound: {fileID: 0}
+  playerDetectionRadius: 20
+--- !u!65 &8433983711223732744
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4141750358961997147}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.1760356, y: 5.10985, z: 0.8886031}
+  m_Center: {x: 0.04232198, y: 2.054925, z: -0.22310512}
+--- !u!195 &2228661234494648351
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4141750358961997147}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 0
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &4218394018898290884
 GameObject:
   m_ObjectHideFlags: 0
@@ -1176,7 +1217,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1880655221286524421}
   - component: {fileID: 7746583838169527042}
-  - component: {fileID: 3383137841386511203}
   m_Layer: 0
   m_Name: TallCharacter
   m_TagString: Untagged
@@ -1278,20 +1318,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.0120049715, y: 0.19727468, z: 0.5041966}
     m_Extent: {x: 2.0662808, y: 2.609706, z: 1.5132165}
   m_DirtyAABB: 0
---- !u!64 &3383137841386511203
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6795106430110179116}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -437251921577646865, guid: 1a6497505bc111244907b205f2b2b910, type: 3}
 --- !u!1 &6876659872709386047
 GameObject:
   m_ObjectHideFlags: 0

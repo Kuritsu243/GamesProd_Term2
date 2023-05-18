@@ -79,12 +79,9 @@ namespace Player.Input
                     _playerMovement.IsZipLining = true;
                     break;
                 case null:
-                    Debug.Log("this has no tag");
-                    
                     break;
             }
-            Debug.Log(hit.transform.root.gameObject);
-        
+
         }
     
     }

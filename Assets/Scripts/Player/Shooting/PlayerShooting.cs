@@ -126,16 +126,16 @@ namespace Player.Shooting
 
             foreach (var shotgunAnimClip in _shotgunAnimClips)
                 if (shotgunAnimClip.name == "ShotgunShootAnim")
-                    shotgunCooldown = shotgunAnimClip.length - shotgunAnimClip.length / 6;
+                    shotgunCooldown = shotgunAnimClip.length + shotgunAnimClip.length / 6;
             
             foreach (var rocketAnimClip in _rocketAnimClips)
                 if (rocketAnimClip.name == "RocketShootAnim")
-                    rocketCooldown = rocketAnimClip.length - rocketAnimClip.length / 5;
+                    rocketCooldown = rocketAnimClip.length + rocketAnimClip.length / 4;
 
             foreach (var dualAnimClip in _dualLAnimClips)
             {
                 if (dualAnimClip.name != "RevolverLAnim") continue;
-                dualWieldCooldown = dualAnimClip.length - dualAnimClip.length / 4;
+                dualWieldCooldown = dualAnimClip.length + dualAnimClip.length / 4;
                 _leftAnimClip = dualAnimClip;
             }
 
@@ -148,7 +148,7 @@ namespace Player.Shooting
             foreach (var magicAnimClip in _magicAnimClips)
             {
                 if (magicAnimClip.name == "WandCastAnim")
-                    magicCooldown = magicAnimClip.length - magicAnimClip.length / 4;
+                    magicCooldown = magicAnimClip.length + magicAnimClip.length / 4;
             }
 
             _canFire = true;
@@ -198,14 +198,14 @@ namespace Player.Shooting
                 var trail = Instantiate(bulletTrail, spawnPos.position, Quaternion.identity);
                 StartCoroutine(SpawnTrail(trail, hit.point, hit.normal, true));
                 
-                switch (hit.transform.tag)
+                switch (hit.transform.root.tag)
                 {
                     case "Enemy":
-                        var collidedEnemy = hit.transform.gameObject;
+                        var collidedEnemy = hit.transform.root.gameObject;
                         if (_playerBuff.IsDamageBuffActive)
-                            collidedEnemy.GetComponent<EnemyController>().TakeDamage(CalculateBuffedDamage(dualWieldDamage));
+                            collidedEnemy.GetComponentInChildren<EnemyController>().TakeDamage(CalculateBuffedDamage(dualWieldDamage));
                         else
-                            collidedEnemy.GetComponent<EnemyController>().TakeDamage(dualWieldDamage);
+                            collidedEnemy.GetComponentInChildren<EnemyController>().TakeDamage(dualWieldDamage);
                         break;
                 }
             }

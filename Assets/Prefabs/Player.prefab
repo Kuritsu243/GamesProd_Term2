@@ -2496,6 +2496,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RevolverResized
       objectReference: {fileID: 0}
+    - target: {fileID: 8100541923287553102, guid: 52beee92ee15f35428aef119f79df8bd, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8872433598083796724, guid: 52beee92ee15f35428aef119f79df8bd, type: 3}
       propertyPath: m_RootOrder
       value: -1

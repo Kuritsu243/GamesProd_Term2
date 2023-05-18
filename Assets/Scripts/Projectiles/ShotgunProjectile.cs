@@ -14,12 +14,6 @@ namespace Projectiles
         private int _pelletSpeed;
         private int _pelletDespawnTime;
         private Vector3 _direction;
-        private void Start()
-        {
-
-
-        }
-
 
         public void Initialize(float damage, int projectileSpeed, int despawnTime, Vector3 spawnDirection)
         {

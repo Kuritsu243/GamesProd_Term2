@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7966976587159945463}
   - component: {fileID: 2079484596613470126}
   - component: {fileID: 980662890989948593}
-  - component: {fileID: 4759687870736305657}
+  - component: {fileID: 5144836999342171136}
   m_Layer: 0
   m_Name: pellet 1
   m_TagString: Untagged
@@ -114,8 +114,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e42e4e0b48b67764d855c382dd49292e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!64 &4759687870736305657
-MeshCollider:
+--- !u!135 &5144836999342171136
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -124,7 +124,6 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 2540817853737639666, guid: 52e3cd27feefcce40b5d232edd4e49b7, type: 3}
+  serializedVersion: 2
+  m_Radius: 0.50000006
+  m_Center: {x: 0, y: 0, z: 0}

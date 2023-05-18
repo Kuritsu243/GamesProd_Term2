@@ -17,7 +17,8 @@ MonoBehaviour:
   cardMaterials:
   - {fileID: 2100000, guid: 41f47151981080b45a546dbdebda5581, type: 2}
   cardSprite: {fileID: 21300000, guid: 9083e405fa846c74d9f4f397061c410d, type: 3}
-  cardInfo: description test
+  cardInfo: Judgement. A shotgun to rain down judgement on your enemies. Flip this
+    card to get a jump height advantage temporarily.
   crosshairSprite: {fileID: 0}
   weaponDamage: 0
   weaponAmmo: 0

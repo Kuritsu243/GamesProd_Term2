@@ -24,6 +24,7 @@ namespace UI
         private GameObject _buffDurationUI;
         private Image _buffDurationForeground;
         private Image _healthBarForeground;
+        private Image _newCardSprite;
         private Image _cardImage;
         private TextMeshProUGUI _activeItemText;
         private TextMeshProUGUI _activeItemNoText;
@@ -62,6 +63,7 @@ namespace UI
             _buffDurationUI = GameObject.FindGameObjectWithTag("buffDurationUI");
             _buffDurationForeground = _buffDurationUI.GetComponentInChildren<Image>();
             _cardImage = _cardSprite.GetComponent<Image>();
+            _newCardSprite = GameObject.FindGameObjectWithTag("newCardSprite").GetComponent<Image>();
             
             _cardInfoUI.SetActive(false);
             _buffDurationUI.SetActive(false);
@@ -101,7 +103,6 @@ namespace UI
 
         public void ToggleInventory(int cardIndex)
         {
-            Debug.Log(cardIndex);
             _inventoryUI.SetActive(!_isInvOpen);
             _isInvOpen = !_isInvOpen;
             if (!_isInvOpen) return;
@@ -109,8 +110,6 @@ namespace UI
             _slotIndex = 0;
             foreach (var inventorySlot in inventorySlots)
             {
-                Debug.Log(cardIndex);
-                Debug.Log(_slotIndex);
                 switch (cardIndex <= _slotIndex && cardIndex > -1)
                 {
                     case true:
@@ -161,8 +160,9 @@ namespace UI
 
         public void ShowNewCardUI(cardObject newCard)
         {
-            _cardInfoName.text = newCard.name;
+            _cardInfoName.text = newCard.cardSprite.name;
             _cardInfoDesc.text = newCard.cardInfo;
+            _newCardSprite.sprite = newCard.cardSprite;
             StartCoroutine(NewCard());
         }
 
@@ -182,10 +182,7 @@ namespace UI
             _buffDurationUI.SetActive(true);
         }
         
-        // if (uoutmomgsy)
-        // {
-        //     Debug.Log("your mom gay");
-        // }
+
 
         public void HideBuffDurationUI()
         {

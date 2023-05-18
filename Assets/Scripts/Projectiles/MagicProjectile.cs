@@ -19,30 +19,9 @@ namespace Projectiles
             _projectileRigidbody.AddForce(transform.forward * _projectileSpeed, ForceMode.Impulse);
             StartCoroutine(ProjectileLifeCounter());
         }
-
-        //private void OnCollisionEnter(Collision collision)
-        //{
-        //    Debug.Log(collision.gameObject);
-        //    var collidedObject = collision.transform.root.gameObject;
-        //    switch (collidedObject.tag)
-        //    {
-        //        case "Enemy" when !_enemyProjectile:
-        //            var enemyScript = collidedObject.GetComponent<EnemyController>();
-        //            enemyScript.TakeDamage(_projectileDamage);
-        //            Despawn();
-        //            break;
-        //        case "Player" when _enemyProjectile:
-        //            var playerHealth = collidedObject.GetComponentInChildren<PlayerHealth>();
-        //            playerHealth.Damage(_projectileDamage);
-        //            Despawn();
-        //            break;
-                
-        //    }
-        //}
-
+        
         private void OnTriggerEnter(Collider other)
         {
-            Debug.Log(other.transform.root.gameObject);
             var collidedObject = other.transform.root.gameObject;
             switch (collidedObject.tag)
             {
@@ -56,13 +35,11 @@ namespace Projectiles
                     playerHealth.Damage(_projectileDamage);
                     Despawn();
                     break;
-                case null:
-                    Despawn();
+                case "Enemy" when _enemyProjectile:
+                    Physics.IgnoreCollision(GetComponent<Collider>(), other);
                     break;
-
             }
-            Despawn();
-            
+
         }
 
         public void Initialize(int projDamage, int projSpeed, int despawnTime, bool enemyProj)

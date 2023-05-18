@@ -21,6 +21,7 @@ namespace Environment
         {
             if (!other.transform.root.gameObject.CompareTag("Player")) return;
             if (!CanWin) return;
+            Cursor.lockState = CursorLockMode.None;
             SceneManager.LoadScene(mainMenu);
         }
     }

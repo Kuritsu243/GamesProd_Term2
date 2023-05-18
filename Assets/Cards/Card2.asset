@@ -16,9 +16,10 @@ MonoBehaviour:
   cardMesh: {fileID: 0}
   cardMaterials:
   - {fileID: 2100000, guid: 57aebcc024b227240bded499be02efe0, type: 2}
-  cardSprite: {fileID: 21300000, guid: 446d3edd09ab9694e9d671c628406e0c, type: 3}
-  cardInfo: description test
-  crosshairSprite: {fileID: 0}
+  cardSprite: {fileID: 21300000, guid: 09a5f54da10e5e24b8f8118e37c255ef, type: 3}
+  cardInfo: Rocket launcher. Be careful with this card as you can deal damage to
+    yourself to. Flip the card to activate a temporary damage buff.
+  crosshairSprite: {fileID: 21300000, guid: 09a5f54da10e5e24b8f8118e37c255ef, type: 3}
   weaponDamage: 0
   weaponAmmo: 0
   buffType: 1

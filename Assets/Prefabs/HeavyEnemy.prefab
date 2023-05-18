@@ -619,9 +619,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyType: 0
-  maxHealth: 4
+  maxHealth: 25
   meleeAttackRange: 3
-  meleeDamage: 10
+  meleeDamage: 30
   rangedAttackDamage: 0
   rangedRange: 0
   rangedAttackProjectileSpeed: 0
@@ -632,7 +632,11 @@ MonoBehaviour:
   attackType: 0
   magicWeaponProj: {fileID: 0}
   enemyProjSpawnPos: {fileID: 0}
-  playerDetectionRadius: 5
+  tvHeadDebuffLength: 5
+  tvHeadDebuffCooldown: 8
+  tvHeadSound: {fileID: 0}
+  tallSound: {fileID: 0}
+  playerDetectionRadius: 8
 --- !u!1 &5739326942368878052
 GameObject:
   m_ObjectHideFlags: 0

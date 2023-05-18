@@ -67,6 +67,9 @@ namespace Enemies
         [SerializeField] private GameObject enemyProjSpawnPos;
         [SerializeField] private float tvHeadDebuffLength = 5f;
         [SerializeField] private float tvHeadDebuffCooldown = 8f;
+        [SerializeField] private AudioClip tvHeadSound;
+        [SerializeField] private AudioClip tallSound;
+        
         
         
 
@@ -96,6 +99,8 @@ namespace Enemies
         private bool _canDebuff;
         private bool _canAttack;
         private WinCondition _winConditionScript;
+        private float _tallEnemySoundDuration;
+        private float _tvHeadSoundDuration;
 
         // Start is called before the first frame update
         private void Start()
@@ -115,12 +120,15 @@ namespace Enemies
             _playerDefaultJumpHeight = _playerMovement.JumpHeight;
             _enemyAnimator = GetComponent<Animator>();
             _winConditionScript = GameObject.FindGameObjectWithTag("winZone").GetComponent<WinCondition>();
+            // _tallEnemySoundDuration = tallSound.length;
+            // _tvHeadSoundDuration = tvHeadSound.length;
 
             animClips = _enemyAnimator.runtimeAnimatorController.animationClips;
 
             switch (enemyType)
             {
                 case EnemyType.Heavy:
+                    _canMove = true;
                     _enemyHandScript = GetComponentInChildren<HeavyEnemyHand>();
                     _enemyHandScript.DamageAmount = meleeDamage;
                     foreach (var animClip in animClips)
@@ -129,6 +137,7 @@ namespace Enemies
                     _enemyAnimator.Play("HeavyIdle");
                     break;
                 case EnemyType.Tall:
+                    _canMove = false;
                     _enemyAnimator.Play("Tall_Idle");
                     break;
                 case EnemyType.TVHead:
@@ -167,6 +176,7 @@ namespace Enemies
                     StartCoroutine(AttackPlayerMelee());
                     break;
                 case EnemyType.Tall:
+
                     if (Vector3.Distance(transform.position, _player.transform.position) > rangedRange) return;
                     if (Vector3.Distance(transform.position, _player.transform.position) > playerDetectionRadius) return;
                     _isLookingAtPlayer = CheckIfLookingAtPlayer();

@@ -21,6 +21,8 @@ TagManager:
   - enemyProjSpawn
   - Zipline
   - buffDurationUI
+  - postProcessingController
+  - winZone
   layers:
   - Default
   - TransparentFX

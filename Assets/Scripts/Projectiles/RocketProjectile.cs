@@ -55,8 +55,6 @@ namespace Projectiles
             {
                 var currentCollider = hitColliders[i];
                 var currentGameObject = currentCollider.transform.root.gameObject;
-                Debug.Log(currentGameObject.tag);
-                Debug.Log(currentGameObject);
                 switch (currentGameObject.tag)
                 {
                     case "Enemy":

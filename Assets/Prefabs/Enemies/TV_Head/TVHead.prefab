@@ -1005,6 +1005,10 @@ MonoBehaviour:
   attackType: 0
   magicWeaponProj: {fileID: 0}
   enemyProjSpawnPos: {fileID: 0}
+  tvHeadDebuffLength: 5
+  tvHeadDebuffCooldown: 8
+  tvHeadSound: {fileID: 0}
+  tallSound: {fileID: 0}
   playerDetectionRadius: 25
 --- !u!65 &4027212640916404679
 BoxCollider:
