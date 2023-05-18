@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Linq;
+using Environment;
 using Player;
 using Player.Health;
 using Player.Input;
@@ -94,6 +95,7 @@ namespace Enemies
         private float _playerDefaultJumpHeight;
         private bool _canDebuff;
         private bool _canAttack;
+        private WinCondition _winConditionScript;
 
         // Start is called before the first frame update
         private void Start()
@@ -112,6 +114,7 @@ namespace Enemies
             _playerDefaultSpeed = _playerMovement.MoveSpeed;
             _playerDefaultJumpHeight = _playerMovement.JumpHeight;
             _enemyAnimator = GetComponent<Animator>();
+            _winConditionScript = GameObject.FindGameObjectWithTag("winZone").GetComponent<WinCondition>();
 
             animClips = _enemyAnimator.runtimeAnimatorController.animationClips;
 
@@ -227,6 +230,7 @@ namespace Enemies
         private IEnumerator DebuffPlayer()
         {
             if (!_canDebuff) yield break;
+            StartCoroutine(DebuffCooldown());
             var chosenBuff = (DebuffType) Random.Range(0, Enum.GetValues(typeof(DebuffType)).Length);
             switch (chosenBuff)
             {
@@ -249,7 +253,7 @@ namespace Enemies
                     throw new ArgumentOutOfRangeException();
             }
 
-            StartCoroutine(DebuffCooldown());
+
         }
 
         private IEnumerator DebuffCooldown()
@@ -289,7 +293,9 @@ namespace Enemies
             _playerMovement.MoveSpeed = _playerDefaultSpeed;
             _playerMovement.JumpHeight = _playerDefaultJumpHeight;
             _postProcessingController.DisableBlindness();
-            
+            _winConditionScript.CanWin = true;
+            _winConditionScript.WinCollider.enabled = true;
+
         }
 
         private IEnumerator PauseBeforeShoot(float pauseTime)
