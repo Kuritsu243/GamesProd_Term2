@@ -18,14 +18,9 @@ namespace Player.Health
         {
             CurrentHealth = maxHealth;
         }
-
-        // Update is called once per frame
-        private void FixedUpdate()
-        {
         
-        }
 
-        private void Die()
+        public void Die()
         {
             Cursor.lockState = CursorLockMode.None;
             SceneManager.LoadScene(deathScreen);

@@ -42,7 +42,7 @@ namespace Projectiles
 
         private void OnTriggerEnter(Collider other)
         {
-            Debug.Log(other.gameObject);
+            Debug.Log(other.transform.root.gameObject);
             var collidedObject = other.transform.root.gameObject;
             switch (collidedObject.tag)
             {
@@ -56,8 +56,13 @@ namespace Projectiles
                     playerHealth.Damage(_projectileDamage);
                     Despawn();
                     break;
+                case null:
+                    Despawn();
+                    break;
 
             }
+            Despawn();
+            
         }
 
         public void Initialize(int projDamage, int projSpeed, int despawnTime, bool enemyProj)

@@ -34,10 +34,9 @@ namespace Player
         {
             _velocity = (transform.position - _previousPos).magnitude / Time.deltaTime;
             _previousPos = transform.position;
-            Debug.Log(_velocity);
-            
-            
-            
+
+
+
             switch (_velocity)
             {
                 case > -0.1f and < 1f when !_playerMoving:

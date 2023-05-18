@@ -36,7 +36,6 @@ namespace Projectiles
 
         private void OnTriggerEnter(Collider other)
         {
-            Debug.Log(other.gameObject);
             if (other.transform.root.CompareTag("Player"))
                 Physics.IgnoreCollision(other, GetComponent<Collider>());
                 
@@ -56,6 +55,8 @@ namespace Projectiles
             {
                 var currentCollider = hitColliders[i];
                 var currentGameObject = currentCollider.transform.root.gameObject;
+                Debug.Log(currentGameObject.tag);
+                Debug.Log(currentGameObject);
                 switch (currentGameObject.tag)
                 {
                     case "Enemy":

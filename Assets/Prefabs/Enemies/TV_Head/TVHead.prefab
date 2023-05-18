@@ -933,6 +933,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5669075878698879694}
   - component: {fileID: 8368917865930410474}
+  - component: {fileID: 4811103381358958859}
+  - component: {fileID: 4027212640916404679}
   m_Layer: 0
   m_Name: TVHead
   m_TagString: Untagged
@@ -977,6 +979,46 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &4811103381358958859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5037076988404519028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23bb0e5caed37ad448aa30e9bb829d94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyType: 2
+  maxHealth: 5
+  meleeAttackRange: 0
+  meleeDamage: 0
+  rangedAttackDamage: 0
+  rangedRange: 0
+  rangedAttackProjectileSpeed: 0
+  rangedAttackProjectileDespawnTime: 0
+  rangedAttackCooldown: 0
+  pauseTimeBeforeShoot: 0
+  meleeAttackCooldown: 0
+  attackType: 0
+  magicWeaponProj: {fileID: 0}
+  enemyProjSpawnPos: {fileID: 0}
+  playerDetectionRadius: 25
+--- !u!65 &4027212640916404679
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5037076988404519028}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.297862, y: 2.6162252, z: 1.6399384}
+  m_Center: {x: 0.14893103, y: 0.8081126, z: 0.061424255}
 --- !u!1 &5053922342653440815
 GameObject:
   m_ObjectHideFlags: 0

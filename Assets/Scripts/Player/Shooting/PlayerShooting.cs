@@ -33,7 +33,8 @@ namespace Player.Shooting
         [SerializeField] private GameObject magicProjectile;
         [SerializeField] private int magicProjectileSpeed;
         [SerializeField] private int magicDespawnTime;
-
+        [SerializeField] private Animator magicAnimator;
+        [SerializeField] private AudioClip magicAudio;
         
         [Header("Rocket Specific Settings")]
         [SerializeField] private GameObject rocketProjectile;
@@ -41,6 +42,8 @@ namespace Player.Shooting
         [SerializeField] private int rocketDespawnTime;
         [SerializeField] private int rocketExplosionRadius;
         [SerializeField] private Animator rocketAnimator;
+        [SerializeField] private AudioClip rocketAudio;
+        
         [Header("Shotgun Specific Settings")] 
         [SerializeField] private GameObject pelletProjectile;
         [SerializeField] private int shotgunPelletCount;
@@ -49,9 +52,13 @@ namespace Player.Shooting
         [SerializeField] private int shotgunPelletSpeed;
         [SerializeField] private int shotgunPelletDespawnTime;
         [SerializeField] private Animator shotgunAnimator;
+        [SerializeField] private AudioClip shotgunAudio;
+        
         [Header("Dual Wield Specific Settings")] 
         [SerializeField] private Animator dualLAnimator;
         [SerializeField] private Animator dualRAnimator;
+        [SerializeField] private AudioClip dualWieldAudio;
+        
         [Header("Raycast Settings")] 
         [SerializeField] private LayerMask layerMask;
         [SerializeField] private int maxInteractDistance;
@@ -96,8 +103,10 @@ namespace Player.Shooting
         private AnimationClip[] _rocketAnimClips;
         private AnimationClip[] _dualLAnimClips;
         private AnimationClip[] _dualRAnimClips;
+        private AnimationClip[] _magicAnimClips;
         private AnimationClip _leftAnimClip;
         private AnimationClip _rightAnimClip;
+        private AudioSource _audioSource;
         
         // Start is called before the first frame update
         private void Start()
@@ -105,6 +114,7 @@ namespace Player.Shooting
             _playerInventory = GetComponent<PlayerInventory>();
             _playerBuff = GetComponent<PlayerBuff>();
             _playerCamera = GetComponentInChildren<Camera>();
+            _audioSource = GetComponent<AudioSource>();
             _projectileSpawnPoint = GameObject.FindGameObjectWithTag("projSpawnPoint");
             CurrentAmmo = 50;
 
@@ -112,6 +122,7 @@ namespace Player.Shooting
             _rocketAnimClips = rocketAnimator.runtimeAnimatorController.animationClips;
             _dualLAnimClips = dualLAnimator.runtimeAnimatorController.animationClips;
             _dualRAnimClips = dualRAnimator.runtimeAnimatorController.animationClips;
+            _magicAnimClips = magicAnimator.runtimeAnimatorController.animationClips;
 
             foreach (var shotgunAnimClip in _shotgunAnimClips)
                 if (shotgunAnimClip.name == "ShotgunShootAnim")
@@ -134,6 +145,12 @@ namespace Player.Shooting
                 _rightAnimClip = dualAnimClip;
             }
 
+            foreach (var magicAnimClip in _magicAnimClips)
+            {
+                if (magicAnimClip.name == "WandCastAnim")
+                    magicCooldown = magicAnimClip.length - magicAnimClip.length / 4;
+            }
+
             _canFire = true;
         }
 
@@ -148,7 +165,7 @@ namespace Player.Shooting
                 case false:
                     return;
                 case true when _playerInventory.CurrentCard.weaponType == cardObject.WeaponType.Pistol:
-                    PistolFire();
+                    // PistolFire();
                     break;
                 case true when _playerInventory.CurrentCard.weaponType == cardObject.WeaponType.DualWield:
                     DualWieldFire();
@@ -209,31 +226,32 @@ namespace Player.Shooting
                     break;
             }
             StartCoroutine(WeaponFiringCooldown(dualWieldCooldown));
+            _audioSource.PlayOneShot(dualWieldAudio);
             CurrentAmmo--;
             if (CurrentAmmo > 0) return;
             _playerInventory.ExpireWeapon(_playerInventory.CurrentCard);
         }
 
-        private void PistolFire()
-        {
-            var rayOrigin = _playerCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
-            if (!Physics.Raycast(rayOrigin, out var hit, maxInteractDistance)) return;
-            TrailRenderer trail = Instantiate(bulletTrail, pistolSpawnPos.transform.position, Quaternion.identity);
-            // StartCoroutine(SpawnTrail(trail, hit));
-            switch (hit.transform.tag)
-            {
-                case "Enemy":
-                    var collidedEnemy = hit.transform.gameObject;
-                    collidedEnemy.GetComponent<EnemyController>().TakeDamage(pistolDamage);
-
-                    break;
-            }
-
-            StartCoroutine(WeaponFiringCooldown(pistolCooldown));
-            CurrentAmmo--;
-            if (CurrentAmmo > 0) return;
-            _playerInventory.ExpireWeapon(_playerInventory.CurrentCard);
-        }
+        // private void PistolFire()
+        // {
+        //     var rayOrigin = _playerCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
+        //     if (!Physics.Raycast(rayOrigin, out var hit, maxInteractDistance)) return;
+        //     TrailRenderer trail = Instantiate(bulletTrail, pistolSpawnPos.transform.position, Quaternion.identity);
+        //     // StartCoroutine(SpawnTrail(trail, hit));
+        //     switch (hit.transform.tag)
+        //     {
+        //         case "Enemy":
+        //             var collidedEnemy = hit.transform.gameObject;
+        //             collidedEnemy.GetComponent<EnemyController>().TakeDamage(pistolDamage);
+        //
+        //             break;
+        //     }
+        //
+        //     StartCoroutine(WeaponFiringCooldown(pistolCooldown));
+        //     CurrentAmmo--;
+        //     if (CurrentAmmo > 0) return;
+        //     _playerInventory.ExpireWeapon(_playerInventory.CurrentCard);
+        // }
 
         private void ShotgunFire()
         {
@@ -255,6 +273,7 @@ namespace Player.Shooting
             }
             
             shotgunAnimator.Play("ShotgunShootAnim");
+            _audioSource.PlayOneShot(shotgunAudio);
             StartCoroutine(WeaponFiringCooldown(shotgunCooldown));
             CurrentAmmo--;
             if (CurrentAmmo > 0) return;
@@ -290,6 +309,7 @@ namespace Player.Shooting
             rocketRigidbody.AddForce(direction.normalized * rocketProjectileSpeed, ForceMode.Impulse); // add the force
             
             rocketAnimator.Play("RocketShootAnim");
+            _audioSource.PlayOneShot(rocketAudio);
             StartCoroutine(WeaponFiringCooldown(rocketCooldown));
             CurrentAmmo--; // deplete ammo
             if (CurrentAmmo > 0) return; // if less than 0 ammo
@@ -303,7 +323,9 @@ namespace Player.Shooting
                 Instantiate(magicProjectile, magicSpawnPos.transform.position, transform.rotation);
             _magicProjectile = _spawnedProjectile.GetComponent<MagicProjectile>();
             _magicProjectile.Initialize(magicDamage, magicProjectileSpeed, magicDespawnTime, false);
+            magicAnimator.Play("WandCastAnim");
             StartCoroutine(WeaponFiringCooldown(magicCooldown));
+            _audioSource.PlayOneShot(magicAudio);
             CurrentAmmo--;
             if (CurrentAmmo > 0) return;
             _playerInventory.ExpireWeapon(_playerInventory.CurrentCard);
@@ -314,9 +336,6 @@ namespace Player.Shooting
             var startPos = trail.transform.position;
             var distance = Vector3.Distance(trail.transform.position, point);
             var remainingDistance = distance;
-            Debug.Log(startPos);
-            Debug.Log(distance);
-            
 
             while (remainingDistance > 0)
             {

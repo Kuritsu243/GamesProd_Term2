@@ -18,11 +18,24 @@ namespace PostProcessing
         
         private Volume _sceneVolume;
         private Vignette _sceneVignette;
+        private ChromaticAberration _chromaticAberration;
+        private LensDistortion _lensDistortion;
         // Start is called before the first frame update
         private void Start()
         {
             _sceneVolume = GetComponent<Volume>();
             _sceneVolume.profile.TryGet(out _sceneVignette);
+            _sceneVolume.profile.TryGet(out _chromaticAberration);
+            _sceneVolume.profile.TryGet(out _lensDistortion);
+
+            _sceneVignette.active = false;
+            
+            _chromaticAberration.active = true;
+            _chromaticAberration.intensity.Override(0.4f);
+            
+            _lensDistortion.active = false;
+            
+            // EnableBlindness();
         }
 
         // Update is called once per frame
@@ -35,8 +48,28 @@ namespace PostProcessing
         {
             _sceneVignette.color.Override(GetBuffColour(currentBuff));
             _sceneVignette.active = true;
-            _sceneVignette.intensity = new ClampedFloatParameter(1f, 0f, 1f);
+            _sceneVignette.intensity.Override(1f);
             // _sceneVolume.profile.TryGet<Vignette>(out _sceneVignette);
+        }
+
+        public void EnableBlindness()
+        {
+            _sceneVignette.color.Override(Color.black);
+            _sceneVignette.intensity.Override(0.605f);
+            _sceneVignette.active = true;
+            
+            _chromaticAberration.intensity.Override(1f);
+
+            
+            _lensDistortion.intensity.Override(0.865f);
+            _lensDistortion.active = true;
+        }
+
+        public void DisableBlindness()
+        {
+            _sceneVignette.active = false;
+            _chromaticAberration.intensity.Override(0.4f);
+            _lensDistortion.active = false;
         }
 
         public void DisableVignette()

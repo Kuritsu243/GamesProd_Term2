@@ -4,6 +4,7 @@ using Cards;
 using Player.Inventory;
 using Player.Buff;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Player.Input
 {
@@ -11,6 +12,7 @@ namespace Player.Input
     {
         [Header("Player Movement")]
         [SerializeField] private float playerSpeed;
+        [SerializeField] private AudioClip[] footstepSounds;
         [Header("Jumping and Gravity")]
         [SerializeField] private float playerGravity;
         [SerializeField] private float playerJumpHeight;
@@ -26,6 +28,7 @@ namespace Player.Input
 
         private InputSystem _inputSystem;
         private CharacterController _characterController;
+        private AudioSource _playerAudioSource;
         private PlayerMouseLook _playerMouseLook;
         private PlayerInventory _playerInventory;
         private PlayerBuff _playerBuff;
@@ -36,13 +39,27 @@ namespace Player.Input
         private bool _isDashing;
         private bool _isInDashCooldown;
         private bool _isJumpBuffActive;
+        private bool _canPlaySound = true;
 
         public bool IsJumpBuffActive { get => _isJumpBuffActive; set => _isJumpBuffActive = value; }
+        
+        public float JumpHeight
+        {
+            get => playerJumpHeight;
+            set => playerJumpHeight = value;
+        }
+
+        public float MoveSpeed
+        {
+            get => playerSpeed;
+            set => playerSpeed = value;
+        }
         public bool IsZipLining { get; set; }
         private void Start()
         {
             _inputSystem = GetComponent<InputSystem>();
             _characterController = GetComponent<CharacterController>();
+            _playerAudioSource = GetComponent<AudioSource>();
             _playerMouseLook = GetComponent<PlayerMouseLook>();
             _playerBuff = GetComponent<PlayerBuff>();
             _playerInventory = GetComponent<PlayerInventory>();
@@ -95,6 +112,8 @@ namespace Player.Input
         
             _verticalVelocity.y += playerGravity * Time.deltaTime;
             _characterController.Move(_verticalVelocity * Time.deltaTime);
+            if (_playerVelocity == Vector3.zero) return;
+            StartCoroutine(PlayFootstepSound());
         }
     
 
@@ -116,10 +135,20 @@ namespace Player.Input
         {
             _isGrounded = _characterController.isGrounded;
         }
-        
-  
 
-   
+        private IEnumerator PlayFootstepSound()
+        {
+            if (!_canPlaySound) yield break;
+            if (!_isGrounded) yield break;
+            var maxIndex = footstepSounds.Length;
+            var chosenIndex = Random.Range(0, maxIndex);
+            var chosenClip = footstepSounds[chosenIndex];
+            var footstepDuration = chosenClip.length + 0.25f;
+            _playerAudioSource.PlayOneShot(chosenClip, 0.1f);
+            _canPlaySound = false;
+            yield return new WaitForSeconds(footstepDuration);
+            _canPlaySound = true;
+        }
 
         private void HandleAllMovement()
         {

@@ -3,9 +3,12 @@ using System.Collections;
 using System.Linq;
 using Player;
 using Player.Health;
+using Player.Input;
+using PostProcessing;
 using Projectiles;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 namespace Enemies
 {
@@ -34,6 +37,13 @@ namespace Enemies
             TVHead
         }
 
+
+        private enum DebuffType
+        {
+            Blindness,
+            JumpHeight,
+            MovementSpeed
+        }
         [Header("Enemy Types")] [SerializeField]
         private EnemyType enemyType;
         
@@ -54,7 +64,10 @@ namespace Enemies
         [SerializeField] private AttackType attackType;
         [SerializeField] private GameObject magicWeaponProj;
         [SerializeField] private GameObject enemyProjSpawnPos;
-
+        [SerializeField] private float tvHeadDebuffLength = 5f;
+        [SerializeField] private float tvHeadDebuffCooldown = 8f;
+        
+        
 
         [Header("Enemy AI Config")] [SerializeField]
         private int playerDetectionRadius;
@@ -67,6 +80,7 @@ namespace Enemies
         private HeavyEnemyHand _enemyHandScript;
         private GameObject _spawnedProjectile;
         private PlayerHealth _playerHealth;
+        private PlayerMovement _playerMovement;
         private MagicProjectile _magicProjectile;
         private Animator _enemyAnimator;
         private bool _isLookingAtPlayer;
@@ -74,18 +88,29 @@ namespace Enemies
         private float _velocity;
         private float _attackAnimLength;
         private AnimationClip[] animClips;
-
+        private PostProcessingController _postProcessingController;
+        private DebuffType _debuffType;
+        private float _playerDefaultSpeed;
+        private float _playerDefaultJumpHeight;
+        private bool _canDebuff;
         private bool _canAttack;
 
         // Start is called before the first frame update
         private void Start()
         {
             _canAttack = true;
+            _canDebuff = true;
             _currentHealth = maxHealth;
             _navMeshAgent = GetComponent<NavMeshAgent>();
             _player = GameObject.FindGameObjectWithTag("Player");
             _playerHealth = _player.GetComponent<PlayerHealth>();
+            _playerMovement = _player.GetComponent<PlayerMovement>();
+            _postProcessingController = GameObject.FindGameObjectWithTag("postProcessingController")
+                .GetComponent<PostProcessingController>();
             enemyProjSpawnPos = gameObject.FindGameObjectInChildWithTag("enemyProjSpawn");
+
+            _playerDefaultSpeed = _playerMovement.MoveSpeed;
+            _playerDefaultJumpHeight = _playerMovement.JumpHeight;
             _enemyAnimator = GetComponent<Animator>();
 
             animClips = _enemyAnimator.runtimeAnimatorController.animationClips;
@@ -131,25 +156,29 @@ namespace Enemies
                     break;
             }
 
-            switch (attackType)
+
+            switch (enemyType)
             {
-                case AttackType.Melee:
+                case EnemyType.Heavy:
                     if (Vector3.Distance(transform.position, _player.transform.position) > meleeAttackRange) return;
                     StartCoroutine(AttackPlayerMelee());
                     break;
-                case AttackType.Ranged:
+                case EnemyType.Tall:
                     if (Vector3.Distance(transform.position, _player.transform.position) > rangedRange) return;
-                    if (Vector3.Distance(transform.position, _player.transform.position) >
-                        playerDetectionRadius) return;
+                    if (Vector3.Distance(transform.position, _player.transform.position) > playerDetectionRadius) return;
                     _isLookingAtPlayer = CheckIfLookingAtPlayer();
                     if (!_isLookingAtPlayer) return;
                     StartCoroutine(PauseBeforeShoot(pauseTimeBeforeShoot));
                     break;
+                case EnemyType.TVHead:
+                    if (!_canDebuff) return;
+                    if (Vector3.Distance(transform.position, _player.transform.position) > playerDetectionRadius) return;
+                    StartCoroutine(DebuffPlayer());
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            
-            Debug.Log(Vector3.Distance(transform.position, _player.transform.position));
+
         }
 
         private void LateUpdate()
@@ -195,6 +224,41 @@ namespace Enemies
             StartCoroutine(AttackCooldown(rangedAttackCooldown));
         }
 
+        private IEnumerator DebuffPlayer()
+        {
+            if (!_canDebuff) yield break;
+            var chosenBuff = (DebuffType) Random.Range(0, Enum.GetValues(typeof(DebuffType)).Length);
+            switch (chosenBuff)
+            {
+                case DebuffType.Blindness:
+                    _postProcessingController.EnableBlindness();
+                    yield return new WaitForSeconds(tvHeadDebuffLength);
+                    _postProcessingController.DisableBlindness();
+                    break;
+                case DebuffType.JumpHeight:
+                    _playerMovement.JumpHeight /= 2;
+                    yield return new WaitForSeconds(tvHeadDebuffLength);
+                    _playerMovement.JumpHeight = _playerDefaultJumpHeight;
+                    break;
+                case DebuffType.MovementSpeed:
+                    _playerMovement.MoveSpeed /= 2;
+                    yield return new WaitForSeconds(tvHeadDebuffLength);
+                    _playerMovement.MoveSpeed = _playerDefaultSpeed;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            StartCoroutine(DebuffCooldown());
+        }
+
+        private IEnumerator DebuffCooldown()
+        {
+            _canDebuff = false;
+            yield return new WaitForSeconds(tvHeadDebuffCooldown);
+            _canDebuff = true;
+        }
+
         private IEnumerator AttackCooldown(float cooldownTime)
         {
             _canAttack = false;
@@ -214,6 +278,18 @@ namespace Enemies
             eulerAngles.x = 0;
             transform.eulerAngles = eulerAngles;
             return true;
+        }
+
+        private void OnDestroy()
+        {
+            if (enemyType != EnemyType.TVHead) return;
+            if (_canDebuff)
+                _canDebuff = false;
+
+            _playerMovement.MoveSpeed = _playerDefaultSpeed;
+            _playerMovement.JumpHeight = _playerDefaultJumpHeight;
+            _postProcessingController.DisableBlindness();
+            
         }
 
         private IEnumerator PauseBeforeShoot(float pauseTime)
